@@ -20,17 +20,36 @@ namespace ReservationRestaurant.Areas.Admin.Models.Sitting
         [Display(Name = "Number of vanancies")]
         public int Vacanies { get; set;  }
         [Display(Name = "Total people in sitting")]
-        public int pax { get; set; }
+        public int Pax { get; set; }
+        public int PaxPecentage
+        {
+            get { return (Pax / 40) * 100; }
+        }
         [Display(Name = "Number of tables reserved")]
         public int Tables { get; set; }     
         [Display(Name = "Number of Bookings by Phone")]
-        public int NumberOfPhoneBookings { get; set; }
-        public double PercentagePhoneBookings { get; set; }
+        public int NumberOfPhoneBookings { get ; set ; }
+        public int PhonePecentage
+        {
+            get { return (NumberOfPhoneBookings / Pax) * 100; }
+        }
         [Display(Name = "Number of Bookings by Email")]
         public int NumberOfEmailBookings { get; set; }
+        public int EmailPecentage
+        {
+            get { return (NumberOfEmailBookings / Pax) * 100; }
+        }
         [Display(Name = "Number of Bookings Online")]
         public int NumberOfOnlineBookings { get; set; }
+        public int OnlinePecentage
+        {
+            get { return NumberOfOnlineBookings / Pax * 100; }
+        }
         [Display(Name = "Number of Walk in Bookings")]
         public int NumberOfWalkInBookings { get; set; }
+        public int WalkInPecentage
+        {
+            get { return (NumberOfWalkInBookings / Pax) * 100; }
+        }
     }
 }

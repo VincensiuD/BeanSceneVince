@@ -21,7 +21,7 @@ namespace ReservationRestaurant.Controllers
         private readonly PersonService _personService;
         private readonly UserManager<IdentityUser> _userManager;
         private IMapper _mapper;
-        private iEmailService _iEmailService; 
+        private iEmailService _iEmailService;
         public ReservationController(ApplicationDbContext context, PersonService personService, UserManager<IdentityUser> userManager, iEmailService iEmailService)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Models.Reservation.Update, Data.Reservation>().ReverseMap().ForAllOtherMembers(x => x.Ignore()));
@@ -32,7 +32,7 @@ namespace ReservationRestaurant.Controllers
             _iEmailService = iEmailService;
         }
         #region Index
-        [Authorize(Roles = "Manager,Employee")]
+        [Authorize(Roles = "Manager, Employee")]
         public async Task<IActionResult> Index(string searchString, string option, string sortOrder)
         {
             var reservation = await _context.Reservations.Include(r => r.Person)
@@ -45,8 +45,6 @@ namespace ReservationRestaurant.Controllers
 
 
             ViewData["CurrentFilter"] = searchString;
-
-
 
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name" : "Name";
             ViewBag.DateSortParm = String.IsNullOrEmpty(sortOrder) ? "Date" : "Date";
@@ -123,8 +121,8 @@ namespace ReservationRestaurant.Controllers
                 preCreate.SittingTypeId = sitting.SittingTypeId;
                 preCreate.AmountOfDaysForCalendar = maximumBookingDate;
             }
-                ViewBagOpenSitting(sittingList);
-                return InsertSelectList(preCreate);
+            ViewBagOpenSitting(sittingList);
+            return InsertSelectList(preCreate);
         }
 
 
@@ -265,7 +263,7 @@ namespace ReservationRestaurant.Controllers
 
             try
             {
-                Sitting sitting = _context.Sittings.FirstOrDefault(s => s.Id == mo.SittingId);
+                Sitting sitting = await _context.Sittings.FirstOrDefaultAsync(s => s.Id == mo.SittingId);
 
                 if (sitting == null || mo.Guests < 1 || mo.StartTime == null)
                 {
@@ -282,9 +280,11 @@ namespace ReservationRestaurant.Controllers
                     SittingId = mo.SittingId,
                     TimeSL = timeSlotSL
                 };
-                if (User.Identity.IsAuthenticated && !(User.IsInRole("Manager") || User.IsInRole("Employee"))) // if the user has logged in
+                if (User.Identity.IsAuthenticated && !(User.IsInRole("Manager") || User.IsInRole("Employee")))   // if the user has logged in
                 {
+
                     var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
                     var person = await _context.People.FirstOrDefaultAsync(p => p.UserId == user.Id);
                     if (person != null)
                     {
@@ -294,11 +294,14 @@ namespace ReservationRestaurant.Controllers
                         m.LastName = person.LastName;
                         m.PhoneNumber = person.Phone;
                     }
-
                     
                 }
-                List<ReservationOrigin> bookingOrigin = _context.ReservationOrigins.ToList();
-                ViewBag.ReservationOriginId = new SelectList(bookingOrigin, "Id", "Name");
+                    List<ReservationOrigin> bookingOrigin = _context.ReservationOrigins.ToList();
+                    ViewBag.ReservationOriginId = new SelectList(bookingOrigin, "Id", "Name");
+
+                
+
+
                 return View(m);
 
             }
@@ -306,9 +309,7 @@ namespace ReservationRestaurant.Controllers
             {
                 return StatusCode(500);
             }
-
         }
-
 
         [HttpPost]
         [ActionName("Create")]
@@ -334,11 +335,11 @@ namespace ReservationRestaurant.Controllers
                     person = await _personService.UpsertPersonAsync(person, false);
                 }
                 string selectedDate = m.StartTime; //selectedDate as astring
-                string selectedTime = m.TimeSlot; ;//get the time portion of the timeslot - still a string at this stage
+                string selectedTime = m.TimeSlot;//get the time portion of the timeslot - still a string at this stage
                 string combinedDateTime = selectedDate + " " + selectedTime;// concat the date and time
                 DateTime finalDateTime = DateTime.Parse(combinedDateTime); // convert it to DateTime object
 
-                var selectedSitting = _context.Sittings.FirstOrDefault(s => m.SittingId == s.Id);
+                var selectedSitting = await _context.Sittings.FirstOrDefaultAsync(s => m.SittingId == s.Id);
 
                 DateTime endTime = finalDateTime.AddMinutes(m.Duration);
                 if (endTime > selectedSitting.EndTime)
@@ -349,6 +350,7 @@ namespace ReservationRestaurant.Controllers
                     m.TimeSL = CreateTimeSlotList(selectedSitting);
                     List<ReservationOrigin> bookingOrigin1 = _context.ReservationOrigins.ToList();
                     ViewBag.ReservationOriginId = new SelectList(bookingOrigin1, "Id", "Name");
+
                     return View(m);
                 }
 
@@ -366,7 +368,9 @@ namespace ReservationRestaurant.Controllers
                 };
                 _context.Reservations.Add(reservation);
                 await _context.SaveChangesAsync();
-                await _iEmailService.SendEmailAsync(m.Email, "Booking Confirmation", "<h1>Booking Confirmed</h1><p>Your Booking has been recieved</p>");
+
+                //await _iEmailService.SendEmailAsync(m.Email, "Booking Confirmation", "<h1>Booking Confirmed</h1><p>Your Booking has been recieved</p>");
+                
                 return RedirectToAction(nameof(Details), new { reservation.Id });
             }
             if (!ModelState.IsValid)
@@ -385,8 +389,40 @@ namespace ReservationRestaurant.Controllers
             }
             List<ReservationOrigin> bookingOrigin = _context.ReservationOrigins.ToList();
             ViewBag.ReservationOriginId = new SelectList(bookingOrigin, "Id", "Name");
+         
             return View(m);
         }
+
+        //private static SelectList CreateTimeSlotList(Sitting sitting)
+        //{
+        //    DateTime startingTimeSlot = sitting.StartTime;
+        //    DateTime endingTimeSlot = sitting.EndTime.AddMinutes(-45);
+
+        //    double timeDifference = (endingTimeSlot - startingTimeSlot).TotalHours;
+        //    int amountForLoop = (int)(timeDifference * 4); //times 4 because there are 4timeslots in 1hr
+        //    List<(int, DateTime)> timeSlotList = new List<(int, DateTime)>();
+
+
+        //    for (int i = 0; i < amountForLoop; i++)
+        //    {
+        //        int minutesToAdd = 15 * i;
+        //        DateTime timeSlot = startingTimeSlot.AddMinutes(minutesToAdd);
+        //        (int, DateTime) timeSlotTuple = ((i + 1), timeSlot);
+        //        timeSlotList.Add(timeSlotTuple);
+
+        //    }
+
+        //    var timeSlotSelectList = timeSlotList
+        //          .Select(i => new
+        //          {
+        //              Id = i.Item1.ToString(),
+        //              timeSelection = i.Item2.ToShortTimeString(),
+        //          }).ToList();
+
+
+        //    SelectList timeSlotSL = new SelectList(timeSlotSelectList, "Id", "timeSelection");
+        //    return timeSlotSL;
+        //}
 
         private static SelectList CreateTimeSlotList(Sitting sitting)
         {
@@ -395,7 +431,7 @@ namespace ReservationRestaurant.Controllers
 
             double timeDifference = (endingTimeSlot - startingTimeSlot).TotalHours;
             int amountForLoop = (int)(timeDifference * 4); //times 4 because there are 4timeslots in 1hr
-           // List<(int, DateTime)> timeSlotList = new List<(int, DateTime)>();
+                                                           // List<(int, DateTime)> timeSlotList = new List<(int, DateTime)>();
             List<string> timeSlotList = new List<string>();
 
             for (int i = 0; i < amountForLoop; i++)
@@ -405,7 +441,7 @@ namespace ReservationRestaurant.Controllers
                 // (int, DateTime) timeSlotTuple = ((i + 1), timeSlot);
 
                 string stringTimeSlot = DateTimeTimeSlot.ToShortTimeString();
-                
+
                 timeSlotList.Add(stringTimeSlot);
 
             }
@@ -559,7 +595,9 @@ namespace ReservationRestaurant.Controllers
             {
                 return NotFound();
             }
-            var startDate = reservation.StartTime.ToShortDateString();
+            //var startDate = reservation.StartTime.ToString("dd/mm/yyyy");// to get the reservation date only as string
+            var startDate = reservation.StartTime.ToShortDateString();// to get the reservation Time only as string
+            //var selectedTimeDB = await _context.TimeSlots.FirstOrDefaultAsync(t => t.Time == startTime);
             var m = new Models.Reservation.Update // here we  create update reservation model instance
             {
                 Id = reservation.Id,
@@ -569,6 +607,7 @@ namespace ReservationRestaurant.Controllers
                 Email = reservation.Person.Email,
                 PhoneNumber = reservation.Person.Phone,
                 StartTime = startDate,
+                //TimeSlot = selectedTimeDB,
                 Guests = reservation.Guests,
                 SpecialRequirement = reservation.SpecialRequirement,
                 Duration = reservation.Duration,

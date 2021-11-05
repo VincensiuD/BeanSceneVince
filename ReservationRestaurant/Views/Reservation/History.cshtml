@@ -9,99 +9,102 @@
 <p>
     <a asp-action="PreCreate">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Reservation ID
-            </th>
-            <th>Person Name</th>
-            <th>
-               Person Email
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Guests)
-            </th>
-            <th>
-                Reservation Status
-            </th>
-            <th>
-                Reservation Origin
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sitting)
-            </th>
-            <th>
-                Booked Tables
-            </th>
-            <th>
-                Sitting Type
-            </th>
-            <th>
-                Special Requirement
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.Id
-            </td>
-            <td>@item.Person.FirstName @item.Person.LastName</td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Person.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Guests)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReservationStatus.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReservationOrigin.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sitting.Name)
-            </td>
-            <td>
-                <div>
-                    @foreach (var table in item.Tables)
-                    {
+<div class="table-responsive">
+    <table class="table table-sm "style="background-color:antiquewhite">
+        <thead>
+            <tr>
+                <th style="display:none">
+                    Reservation ID
+                </th>
+                <th>Name</th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Duration)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Guests)
+                </th>
+                <th style="display:none">
+                    Reservation Status
+                </th>
+                <th style="display:none">
+                    Reservation Origin
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sitting)
+                </th>
+                <th>
+                    Table(s)
+                </th>
+                <th style="display:none">
+                    Sitting Type
+                </th>
+                <th>
+                    Special Requirement
+                </th>
+                <th></th>
+            </tr>
+        </thead>  @foreach (var item in Model)  {
+        <tbody>
+            <tr>
+                <td style="display:none">
+                    @item.Id
+                </td>
+                <td>@item.Person.FirstName @item.Person.LastName</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Guests)
+                </td>
+                <td style="display:none">
+                    @Html.DisplayFor(modelItem => item.ReservationStatus.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservationOrigin.Name)
+                </td>
+                <td style="display:none">
+                    @Html.DisplayFor(modelItem => item.Sitting.Name)
+                </td>
+                <td>
+                    <div>
+                        @foreach (var table in item.Tables)
+                            {
                         <div>
                             @table.Name
                         </div>
-                    }
-                </div>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sitting.SittingType.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SpecialRequirement)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                @if (item.ReservationStatusId == 1 || (User.IsInRole("Manager") || User.IsInRole("Employee")))
-                {
+                            }
+                    </div>
+                </td>
+                <td style="display:none">
+                    @Html.DisplayFor(modelItem => item.Sitting.SittingType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpecialRequirement)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    @if (item.ReservationStatusId == 1 || (User.IsInRole("Manager") || User.IsInRole("Employee")))
+                        {
                     <a asp-action="Update" asp-route-id="@item.Id">Edit</a>
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                }
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                        }
+                </td>
+            </tr>
+        </tbody>
+        }
+
+    </table>
+
+</div>

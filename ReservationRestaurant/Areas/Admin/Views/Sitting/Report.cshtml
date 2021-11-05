@@ -47,10 +47,10 @@
             @Html.DisplayFor(model => model.Vacanies)
         </dd>
         <dt class = "col-sm-5">
-            @Html.DisplayNameFor(model => model.pax)
+            @Html.DisplayNameFor(model => model.Pax)
         </dt>
         <dd class = "col-sm-7">
-            @Html.DisplayFor(model => model.pax)
+            @Html.DisplayFor(model => model.Pax) @Html.DisplayFor(model => model.PaxPecentage)% Full 
         </dd>
         <dt class = "col-sm-5">
             @Html.DisplayNameFor(model => model.Tables)
@@ -61,26 +61,26 @@
         <dt class = "col-sm-5">
             @Html.DisplayNameFor(model => model.NumberOfPhoneBookings)
         </dt>
-        <dd class = "col-sm-7">
-            @Html.DisplayFor(model => model.NumberOfPhoneBookings)
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.NumberOfPhoneBookings)  @Html.DisplayFor(model => model.PhonePecentage)% of all bookings
         </dd>
         <dt class = "col-sm-5">
-            @Html.DisplayNameFor(model => model.NumberOfEmailBookings)  
+            @Html.DisplayNameFor(model => model.NumberOfEmailBookings)
         </dt>
-        <dd class = "col-sm-7">
-            @Html.DisplayFor(model => model.NumberOfEmailBookings)
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.NumberOfEmailBookings)  @Html.DisplayFor(model => model.EmailPecentage)% of all bookings
         </dd>
         <dt class = "col-sm-5">
             @Html.DisplayNameFor(model => model.NumberOfOnlineBookings)
         </dt>
-        <dd class = "col-sm-7">
-            @Html.DisplayFor(model => model.NumberOfOnlineBookings)
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.NumberOfOnlineBookings)  @Html.DisplayFor(model => model.OnlinePecentage)% of all bookings
         </dd>
         <dt class = "col-sm-5">
             @Html.DisplayNameFor(model => model.NumberOfWalkInBookings)
         </dt>
-        <dd class = "col-sm-7">
-            @Html.DisplayFor(model => model.NumberOfWalkInBookings) 
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.NumberOfWalkInBookings)  @Html.DisplayFor(model => model.WalkInPecentage)% of all bookings
         </dd>
     </dl>
 </div>

@@ -1,0 +1,131 @@
+﻿.demo {
+    background: #0075DA;
+}
+
+.modal-box {
+    font-family: 'Roboto', sans-serif;
+}
+    .modal-box .show-modal {
+        color: #fff;
+        background-color: #FF3C5F;
+        font-size: 18px;
+        font-weight: 600;
+        text-transform: uppercase;
+        padding: 10px 15px;
+        margin: 80px auto 0;
+        border-radius: 0;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        border: none;
+        outline: none;
+        display: block;
+
+    }
+
+        .modal-box .show-modal:hover {
+            color: #fff;
+            border: none;
+            outline: none;
+            text-decoration: none;
+        }
+
+.modal-backdrop.in {
+    opacity: 0;
+}
+
+.modal-box .modal {
+    top: 70px !important;
+}
+
+.modal-box .modal-dialog {
+    width: 900px;
+    margin: 90px auto 10px;
+}
+
+    .modal-box .modal-dialog .modal-content {
+        text-align: center;
+        border-radius: 0;
+    }
+
+        .modal-box .modal-dialog .modal-content .close {
+            color: #000;
+            background-color: #C4C6E3;
+            font-size: 28px;
+            text-shadow: none;
+            position: absolute;
+            left: auto;
+            right: 7px;
+            top: 0;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+
+            .modal-box .modal-dialog .modal-content .close:hover {
+                color: #333;
+            }
+
+        .modal-box .modal-dialog .modal-content .modal-body {
+            padding: 30px 0 0 !important;
+            background-color: #c9a671;
+        }
+
+            .modal-box .modal-dialog .modal-content .modal-body .icon {
+                color: #FF3C5F;
+                background: #fff;
+                font-size: 100px;
+                line-height: 150px;
+                width: 150px;
+                height: 150px;
+                margin: -100px auto 30px;
+                border-radius: 50%;
+                border: 10px solid darkred;
+            }
+
+            .modal-box .modal-dialog .modal-content .modal-body .title {
+                color: darkred;
+                font-size: 40px;
+                font-weight: 700;
+                margin: 0 0 20px 0;
+            }
+
+            .modal-box .modal-dialog .modal-content .modal-body .description {
+                font-size: 18px;
+                line-height: 35px;
+                margin: 0 25px 40px;
+            }
+
+            .modal-box .modal-dialog .modal-content .modal-body .modal-cancel,
+            .modal-box .modal-dialog .modal-content .modal-body .subscribe {
+                color: #fff;
+                background-color: #804d00;
+                font-size: 18px;
+                font-weight: 700;
+                text-transform: uppercase;
+                width: 30%;
+                padding: 25px 18px;
+                border: none;
+                overflow: hidden;
+                display: inline-block;
+                margin: 5px -1px;
+                transition: all 0.3s;
+            }
+
+            .modal-box .modal-dialog .modal-content .modal-body .modal-cancel {
+                color: #000;
+                background-color: #C4C6E3;
+            }
+
+            .modal-box .modal-dialog .modal-content .modal-body .subscribe:hover {
+                color: #fff;
+                background-color: #000;
+            }
+
+            .modal-box .modal-dialog .modal-content .modal-body .modal-cancel:hover {
+                color: #fff;
+                background-color: #804d00;
+            }
+
+@media only screen and (max-width: 576px) {
+    .modal-dialog {
+        width: 96% !important;
+    }
+}

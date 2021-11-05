@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +13,9 @@ using ReservationRestaurant.Data;
 using ReservationRestaurant.Service;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 
@@ -36,18 +40,31 @@ namespace ReservationRestaurant
             //});
 
 
-            services.AddScoped<PersonService>();
-            services.AddTransient<iEmailService,SendGridEmailService>();
+            //globalisation
+            services.AddMvc()
+                    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
+            //object p = services.AddPortableObjectLocalization();
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new List<CultureInfo>
+            {
+                new CultureInfo("en-AU"),
+                new CultureInfo("en-GB"),
+            };
+
+                options.DefaultRequestCulture = new RequestCulture("en-GB");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+            services.AddScoped<PersonService>();
+            services.AddTransient<iEmailService, SendGridEmailService>();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                  .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddCors();
-
             services.AddControllersWithViews();
         }
 
@@ -69,10 +86,11 @@ namespace ReservationRestaurant
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseCors(x => {
-                x.AllowAnyMethod().AllowAnyHeader()
- .SetIsOriginAllowed(o => true).AllowCredentials();
-                });
+
+            //globalisation
+            app.UseRequestLocalization();
+
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -88,6 +106,7 @@ namespace ReservationRestaurant
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
             createRoles(serviceProvider);
         }
 
