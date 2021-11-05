@@ -1,0 +1,36 @@
+﻿
+@import '../lib/twitter-bootstrap/scss/_functions.scss';
+@import '../lib/twitter-bootstrap//scss/_variables.scss';
+
+
+$coffee: #1f1300;
+$chocs: #804d00;
+$sandy: #c9a671;
+$dusty: #ffdeab;
+
+$colors: ( "blue": $blue, "indigo": $indigo, "purple": $purple, "pink": $pink, "red": $red,
+    "orange": $orange, "yellow": $yellow, "green": $green, "teal": $teal, "cyan": $cyan,
+    "white": $white, "gray": $gray-600, "gray-dark": $gray-800, "coffee": $coffee, "sandy":$sandy, "chocs":$chocs);
+
+$input-bg: $dusty;
+
+$theme-colors: ( "primary": $chocs, "secondary": $secondary, "success": $success,
+    "info": $info, "warning": $warning, "danger": $danger, "light": $light, 
+    "dark": $dark, "sandy": $sandy, "chocs":$chocs, "coffee":$coffee);
+
+$table-variants: ( "primary": shift-color($primary, $table-bg-scale),
+    "secondary": shift-color($secondary, $table-bg-scale), 
+    "success": shift-color($success, $table-bg-scale), "info": shift-color($info, $table-bg-scale),
+    "warning": shift-color($warning, $table-bg-scale), "danger": shift-color($danger, $table-bg-scale), "light": $light, "dark": $dark, ) !default;
+
+$component-active-color: $sandy;
+$component-active-bg: $chocs;
+
+
+
+$body-color: $coffee; /*font of the body*/
+$link-color: $chocs; /* colour for any underlined link*/
+
+/* import the whole bootstrap scss to implement the changes*/
+@import '../lib//twitter-bootstrap//scss/bootstrap.scss';
+

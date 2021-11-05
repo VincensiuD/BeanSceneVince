@@ -1,0 +1,64 @@
+﻿@{ ViewData["Title"] = "Home Page"; }
+
+<h1> Welcome to BeanScene</h1>
+
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="4000">
+            <img src="~/Images/dish1.jpg" style=" width:375px; height:250px" class="rounded mx-auto d-block" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="4000">
+            <img src="~/Images/dish2.jpg" style=" width:375px; height:250px" class="rounded mx-auto d-block" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="4000">
+            <img src="~/Images/dish3.jpg" style=" width:375px; height:250px" class="rounded mx-auto d-block" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="4000">
+            <img src="~/Images/dish4.jpg"style=" width:375px; height:250px" class="rounded mx-auto d-block" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="4000">
+            <img src="~/Images/dish5.jpg" style=" width:375px; height:250px" class="rounded mx-auto d-block" alt="...">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<h5>Established since 1976</h5>
+
+<h3>History</h3>
+
+<p>Bean Scene was first family business, created by Mr XYZ, who immigrated to Sydney with his wife and 8 children in 1955 from Isle of Manx ....</p>
+<p>We specialise in...</p>
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet orci eu nunc bibendum consequat. Nulla non vestibulum elit, non ultricies ligula. Sed et euismod dolor. Aenean laoreet nibh eget molestie ullamcorper. Ut ut est ex. Duis consectetur massa a ligula elementum auctor. Duis sed orci vitae nibh venenatis posuere.
+
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent condimentum massa ac rutrum sodales. Curabitur a tellus condimentum, tempor augue eget, varius quam. Nulla lorem nunc, elementum at tempus eu, imperdiet at nibh. Suspendisse ut ipsum bibendum, ultricies felis sit amet, aliquam nibh. Aliquam erat volutpat. Mauris lorem elit, cursus quis libero sit amet, bibendum dapibus lacus. Suspendisse cursus in dui in egestas. Praesent vestibulum, arcu sit amet aliquet semper, purus est auctor enim, nec consequat dui ipsum ac libero. Curabitur tempor tristique venenatis. Curabitur tincidunt tempor sagittis. Donec vel laoreet libero, sit amet cursus nibh. In pretium lacinia interdum. Etiam sagittis sollicitudin magna vitae consequat.
+
+    Donec placerat augue ipsum, vitae efficitur sapien lobortis eu. Sed sed turpis non est posuere ultrices eu nec sem. Nullam ut purus eget ligula pellentesque sollicitudin nec quis tellus. Sed id felis nec lacus mattis dapibus sit amet quis ante. Vivamus consequat risus quam, eu hendrerit felis posuere a. Ut non tempus dolor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in felis porta sem volutpat faucibus. Vestibulum vel mattis est, eu lobortis tortor.
+
+    Suspendisse eget placerat ipsum, et sodales arcu. Nunc eget bibendum sapien. Suspendisse eu risus venenatis, condimentum lorem ut, lacinia lorem. Morbi non lectus ut nulla dictum rutrum. Suspendisse sit amet mollis orci, id aliquet erat. Maecenas bibendum scelerisque augue, vitae vestibulum nisi placerat at. Sed tempor nibh sit amet dolor vulputate, eget tempor risus ullamcorper. Suspendisse sed tempus urna. Morbi dignissim justo arcu. Aliquam sed ex ac elit consectetur molestie a vitae leo.
+</p>
+
+
+<a class="nav-link btn-sandy" asp-area="" asp-controller="Reservation" asp-action="PreCreate">Book Now</a>
+
+@section Styles{
+
+    <link href="~/CustomStyle/CentreStyle.css" rel="stylesheet" />
+    <link href="~/css/carouselControl.css" rel="stylesheet" />
+}
+

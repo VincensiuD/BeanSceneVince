@@ -1,0 +1,127 @@
+﻿@model ReservationRestaurant.Areas.Admin.Models.Sitting.Create
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Sitting</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SittingTypeId" class="control-label"></label>
+                <select asp-for="SittingTypeId" class="form-control" id="sss" asp-items="Model.SittingTypeSL">
+                    <option value="">-- select sitting --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" id="yyy" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label"></label>
+                <input asp-for="StartTime" id="chosenDate" class="form-control"  type="date" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Time1" class="control-label"></label>
+                <input asp-for="Time1" id="time1" class="form-control"  type="time" />
+                <span asp-validation-for="Time1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Time2" class="control-label"></label>
+                <input asp-for="Time2" id="time2" class="form-control"  type="time" />
+                <span asp-validation-for="Time2" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="EndTime" class="control-label"></label>
+            <input asp-for="EndTime" class="form-control" />
+            <span asp-validation-for="EndTime" class="text-danger"></span>
+        </div>*@
+
+            <div class="form-group">
+                <label asp-for="Capacity" class="control-label"></label>
+                <input asp-for="Capacity" class="form-control" />
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="RestaurantId" class="control-label"></label>
+            <select asp-for="RestaurantId" class ="form-control" asp-items="ViewBag.RestaurantId"></select>
+        </div>*@
+
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsClosed" /> @Html.DisplayNameFor(model => model.IsClosed)
+                </label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+            <p id="validationMessage"> @ViewBag.ValidationMessage</p>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+
+        let dox = document.getElementById("sss");
+        dox.addEventListener("change", TimeSelection);
+
+        function TimeSelection() {
+            var selectedSitting = $("select#sss option:checked").val();
+            var selectedDate = $("#chosenDate").val();
+            let begTime;
+            let endTime;
+
+            if (selectedSitting == 1) {
+                begTime = "07:00:00"
+                endTime = "11:00:00"            
+            }
+            else if (selectedSitting == 2) {
+                begTime = "12:00:00";
+                endTime = "15:30:00"
+
+            }
+            else if (selectedSitting == 3) {
+                begTime = "17:30:00";
+                endTime = "21:30:00"              
+            }
+            else if (selectedSitting == 4) {
+                begTime = "00:00:00";
+                endTime = "23:59:59"
+            }
+          
+            //$.ajax({
+            //    type: "GET",
+            //    url: "Create",
+            //    data: JSON.stringify({selectedSitting }),
+            //    contentType: "Application/json",
+            //    success: function (result) {
+                    $("#time1").val(begTime);
+                    $("#time2").val(endTime);
+            //    }
+
+            //})
+        }
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

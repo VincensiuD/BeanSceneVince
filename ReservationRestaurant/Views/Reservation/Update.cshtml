@@ -1,0 +1,122 @@
+﻿@model ReservationRestaurant.Models.Reservation.Update
+@{
+    ViewData["Title"] = "Update Reservation";
+}
+<h1>Update</h1>
+<h4>Reservation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>Reservation For: @Model.FirstName @Model.LastName</div>
+            <div>Email: @Model.Email</div>
+            <div>Phone Number: @Model.PhoneNumber</div>
+            <div>Date and Time: @Model.ReservationStartDateTime </div>
+            <div>Sitting Type: @Model.Sitting.SittingType.Name  -- Sitting Name: @Model.Sitting.Name</div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Guests" class="control-label"></label>
+                <input asp-for="Guests" class="form-control" />
+                <span asp-validation-for="Guests" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialRequirement" class="control-label"></label>
+                <input asp-for="SpecialRequirement" class="form-control" />
+                <span asp-validation-for="SpecialRequirement" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>*@
+            @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
+            {
+                <div class="form-group">
+                    <label asp-for="ExistingTables" class="control-label">Tables: </label>
+                    @for (int i = 0; i < Model.ExistingTables.Count; i++)
+                    {
+                        <span> @Model.ExistingTables[i].Name, </span>
+                        <input type="hidden" asp-for="ExistingTables" id="ExistingTables[@i].Id" name="ExistingTables[@i].Id" value="@Model.ExistingTables[i].Id" />
+                    }
+                </div>
+                <div class="form-group">
+                    <label asp-for="SelectedTablesIds" class="control-label"></label>
+                    <select asp-for="SelectedTablesIds" class="form-control chosen-select-width" id="abc" asp-items="Model.Tables" multiple tabindex="16">
+                        <option value="">-- Select Some Tables --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReservationStatusId" class="control-label"></label>
+                    <select asp-for="ReservationStatusId" class="form-control" asp-items="Model.ReservationStatuses"></select>
+                    <span asp-validation-for="ReservationStatusId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReservationOriginId" class="control-label"></label>
+                    <select asp-for="ReservationOriginId" class="form-control" asp-items="Model.ReservationOrigins"></select>
+                    <span asp-validation-for="ReservationOriginId" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="PersonId" />
+            <input type="hidden" asp-for="FirstName" />
+            <input type="hidden" asp-for="LastName" />
+            <input type="hidden" asp-for="Email" />
+            <input type="hidden" asp-for="PhoneNumber" />
+            <input type="hidden" asp-for="StartTime" />
+            @*<input type="hidden" asp-for="TimeSlot.Time" />*@
+            <input type="hidden" asp-for="SittingId" />
+            <input type="hidden" asp-for="ReservationStartDateTime" />
+        </form>
+    </div>
+</div>
+@if (User.IsInRole("Manager") || User.IsInRole("Employee"))
+{
+    <div>
+        <a asp-action="Index">Back to Reservation List</a>
+    </div>
+}
+else
+{
+    <div>
+        <a asp-action="History">Back to My Reservation List</a>
+    </div>
+}
+
+
+@section Styles{
+    <link href="~/css/chosen.css" rel="stylesheet" />
+    @*<link href="~/css/prism.css" rel="stylesheet" />*@
+    @*<link href="~/css/style.css" rel="stylesheet" />*@
+    <style>
+        .select,
+        .chosen-select,
+        .chosen-select-no-single,
+        .chosen-select-no-results,
+        .chosen-select-deselect,
+        .chosen-select-rtl,
+        .chosen-select-width {
+            width: 350px;
+        }
+    </style>
+
+}
+
+@section Scripts {
+    <script src="~/js/chosen.jquery.js"></script>
+    <script src="~/js/init.js"></script>
+    <script src="~/js/prism.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#abc").chosen();
+            $("chosen-select-width").chosen();
+
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

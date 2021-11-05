@@ -1,0 +1,98 @@
+﻿@model IEnumerable<ReservationRestaurant.Data.Sitting>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<br />
+@Html.ActionLink("Sort by Name", "Index", new { sortOrder = ViewBag.NameSortParm }, new { @class = " btn btn-primary" })
+@Html.ActionLink("Sort by StartDate", "Index", new { sortOrder = ViewBag.DateSortParm }, new { @class = " btn btn-primary" })
+@Html.ActionLink("Sort by SittingType", "Index", new { sortOrder = ViewBag.TypeSortParm }, new { @class = " btn btn-primary" })
+@Html.ActionLink("Sort by IsOpen", "Index", new { sortOrder = ViewBag.BoolSortParm }, new { @class = " btn btn-primary" })
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                 Date
+            </th>
+            <th>
+               Start Time
+            </th>
+            <th>
+                End Time
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Capacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vacancies)
+            </th>
+
+            <th>
+                Sitting Type
+            </th>
+            <th>
+                Is Closed?
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @item.StartTime.ToShortDateString()
+            </td>
+            <td >
+                @item.StartTime.ToShortTimeString()
+            </td>
+            <td>
+                @item.EndTime.ToShortTimeString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vacancies)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.SittingType.Name)
+            </td>
+            @if (item.IsClosed)
+            {
+                <td>Closed</td>
+            }
+            else
+            {
+                <td>Open</td>
+            }
+            <td>
+                <a asp-action="Update" asp-route-id="@item.Id">Edit</a> ||
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> ||
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> ||
+                <a asp-action="ReservationList" asp-route-id="@item.Id">Reservation List</a>||
+
+                <a asp-action="Report" asp-route-id="@item.Id">View Report</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

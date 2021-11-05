@@ -1,0 +1,18 @@
+﻿.carousel-control-prev {
+    left: 250px;
+}
+
+.carousel-control-next {
+    right:250px;
+ 
+}
+
+@media (max-width: 900px) {
+    .carousel-control-prev {
+        left: 0;
+    }
+
+    .carousel-control-next {
+        right: 0;
+    }
+}

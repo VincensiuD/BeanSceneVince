@@ -1,0 +1,90 @@
+﻿@model ReservationRestaurant.Areas.Admin.Models.Sitting.Report
+
+@{
+    ViewData["Title"] = "Report";
+}
+
+<h1>Report</h1>
+
+<div>
+    <h4>Report</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.Capacity)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.Capacity)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.ReservationCount)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.ReservationCount)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.Vacanies)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.Vacanies)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.pax)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.pax)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.Tables)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.Tables)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.NumberOfPhoneBookings)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.NumberOfPhoneBookings)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.NumberOfEmailBookings)  
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.NumberOfEmailBookings)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.NumberOfOnlineBookings)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.NumberOfOnlineBookings)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.NumberOfWalkInBookings)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.NumberOfWalkInBookings) 
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

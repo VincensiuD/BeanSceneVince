@@ -1,0 +1,152 @@
+﻿@model IEnumerable<ReservationRestaurant.Data.Reservation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index -- Reservations List</h1>
+
+<p>
+    <a asp-action="PreCreate">Create New</a>
+</p>
+<div class="card bg-transparent">
+    <div class="card-body">
+        <form asp-action="Index" method="get">
+
+            <div class="form-actions no-color">
+                <p>
+                    Search Option:
+                    <label>Reservation Id</label>
+                    <input id="ReservationId" name="option" type="radio" value="ReservationId" />
+                    <span> </span>
+                    <label>Email</label>
+                    <input id="Email" name="option" type="radio" value="Email" />
+                    <span> </span>
+                    <label>Last Name</label>
+                    <input id="Name" name="option" type="radio" value="Name" />
+                    <br />
+                    <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-sandy" /> |
+                    <a asp-action="Index">Back to Full List</a>
+                </p>
+                <p>
+                    @Html.ActionLink("Sort by Name", "Index", new { sortOrder = ViewBag.NameSortParm }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by StartDate", "Index", new { sortOrder = ViewBag.DateSortParm }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by SittingType", "Index", new { sortOrder = ViewBag.TypeSortParm }, new { @class = " btn btn-primary" })
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Person Name</th>
+            <th>
+                Person Email
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Guests)
+            </th>
+            @*<th>
+                Reservation Status
+            </th>
+            <th>
+                Reservation Origin
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Sitting)
+            </th>
+            <th>
+                Booked Tables
+            </th>
+            <th>
+                Sitting Type
+            </th>
+
+            @*<th>
+                Special Requirement
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            
+        <tr  @if(item.ReservationStatus.Name == "Pending")
+        { <text>style="color:red"</text> }
+        else if(item.ReservationStatus.Name == "Confirmed")
+        { <text>style="color:blue"</text>}
+        else if(item.ReservationStatus.Name == "Cancelled")
+        { <text>style="color:grey"</text>}
+
+            >
+            <td >@item.Id</td>
+            <td>@item.Person.FirstName @item.Person.LastName</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Person.Email)
+            </td>
+            <td style="font-weight: bold">
+                @item.StartTime.ToShortDateString()  @item.StartTime.ToShortTimeString()
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Guests)
+            </td>
+            @*<td class="sittingTypes">
+                @Html.DisplayFor(modelItem => item.ReservationStatus.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReservationOrigin.Name)
+            </td>*@
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Sitting.Name)
+            </td>*@
+            <td>
+                <div>
+                    @foreach (var table in item.Tables)
+                    {
+                        <div>
+                            @table.Name
+                        </div>
+                    }
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sitting.SittingType.Name)
+            </td>
+
+            @*<td>
+                @Html.DisplayFor(modelItem => item.SpecialRequirement)
+            </td>*@
+
+        <td>
+            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy" name="Delete-Button">Delete</a>
+            <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a>
+            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a>
+
+        </td>
+        </tr>
+
+        }
+    </tbody>
+</table>
+
+
+@section Scripts{
+  
+    <script>
+
+
+    </script>
+
+}

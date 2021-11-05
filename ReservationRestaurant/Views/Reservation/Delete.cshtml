@@ -1,0 +1,105 @@
+﻿@model ReservationRestaurant.Data.Reservation
+
+@{
+    ViewData["Title"] = "Delete Reservatoin";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Reservation</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Person.FirstName @Model.Person.LastName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.Phone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Guests)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Guests)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ReservationStatus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ReservationStatus.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sitting)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sitting.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sitting.SittingType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sitting.SittingType.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SpecialRequirement)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SpecialRequirement)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Tables)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.ReservationStatusId != 1)
+            {
+                @foreach (var item in Model.Tables)
+                {
+                    <span> @item.Name, </span>
+                }
+            }
+        </dd>
+        @if (User.IsInRole("Manager"))
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ReservationOrigin)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ReservationOrigin.Name)
+            </dd>
+        }
+    </dl>  
+    <form asp-action="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger" name="Delete-Button"/> |
+        <a asp-action="History">Back to My Reservation List</a> | 
+        @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
+        {
+            <a asp-action="Index">Back to Reservations List</a>
+        }
+        <input type="hidden" asp-for="Id" />
+    </form>
+</div>

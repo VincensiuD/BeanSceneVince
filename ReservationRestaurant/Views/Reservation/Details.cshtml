@@ -1,0 +1,128 @@
+﻿@model ReservationRestaurant.Data.Reservation
+
+@{
+    ViewData["Title"] = "Reservation Details Review";
+}
+
+<h1>Review Reservation Details </h1>
+
+<div>
+    <h4>Reservation</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Person.FirstName @Model.Person.LastName
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.Phone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Person.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Guests)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Guests)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ReservationStatus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ReservationStatus.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sitting)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sitting.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sitting.SittingType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sitting.SittingType.Name)
+        </dd>
+        @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ReservationOrigin)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ReservationOrigin.Name)
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Tables)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.ReservationStatusId != 1)
+            {
+                @foreach (var item in Model.Tables)
+                {
+                    <span> @item.Name, </span>
+                }
+            }
+            </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SpecialRequirement)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SpecialRequirement)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (!User.IsInRole("Member"))
+    {
+        <p>
+            <b>
+                If you want to make any update on your reservation, please <a class="text-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>  or Create account.
+                <a class="text-capitalize" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </b>
+        </p>
+    }
+    @if (Model.ReservationStatusId == 1 && User.IsInRole("Member") && !(User.IsInRole("Manager") || User.IsInRole("Employee")))
+    {
+        <p>
+            <a asp-action="Update" asp-route-id="@Model.Id">Edit Reservation </a> || 
+            <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> || 
+            <a asp-action="History">Go To My Previous Reservarion</a> || 
+            <a asp-controller="Home" asp-action="Index">Home Page</a>
+        </p>
+    }
+    else if (!(User.IsInRole("Manager") || User.IsInRole("Employee")))
+    {
+        <p><b>If the reservation status is Pending and you need to modify the reservation, please contact our friendly staff you can call us on: 04 8090 7060</b></p>
+        <a asp-controller="Home" asp-action="Index">Home Page</a>
+    }
+    @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
+    {
+        <p>
+            <a asp-action="Update" asp-route-id="@Model.Id">Edit Reservation/Admin </a> ||
+            <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> ||
+            <a asp-action="Index">Back to Reservation List</a>
+        </p>
+    }
+</div>

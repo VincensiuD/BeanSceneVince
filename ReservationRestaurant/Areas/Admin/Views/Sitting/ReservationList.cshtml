@@ -1,0 +1,150 @@
+﻿@*@model IEnumerable<ReservationRestaurant.Data.Sitting>*@
+@model ReservationRestaurant.Data.Sitting
+
+@{
+    ViewData["Title"] = "ReservationList";
+}
+
+<h1>Reservation list for: </h1>
+
+<h3> Sitting Id: @Model.Id</h3>
+<h3> Name      : @Model.Name</h3>
+<h3> Start time: @Model.StartTime</h3>
+
+<p>
+    <a asp-area="" asp-controller="Reservation" asp-action="PreCreate" 
+       asp-route-sittingId="@Model.Id">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Start Time
+            </th>
+            <th>
+                Duration
+            </th>
+            <th>
+                Guests
+            </th>
+            <th>
+                ReservationStatus
+            </th>
+            <th>
+                ReservationOrigin
+            </th>
+            <th>
+                Sitting
+            </th>
+            <th>
+                Person
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="sortable2">
+        @foreach (var item in Model.Reservations)
+        {
+            <tr @if (item.ReservationStatus.Name == "Pending") { <text> style="color:red" </text>  } 
+            else if (item.ReservationStatus.Name == "Confirmed") { <text> style="color:blue" </text>  }
+            else if (item.ReservationStatus.Name == "Cancelled") { <text> style="color:grey" </text> }
+            class="ui-state-default"
+
+                >
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Guests)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservationStatus.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservationOrigin.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sitting.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.Email)
+                </td>
+                <td>
+                    <a asp-area="" asp-controller="Reservation" asp-action="Update" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-area="" asp-controller="Reservation" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-area="" asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-area="Admin" asp-controller="Sitting" asp-action="Index"> Back to List </a>
+</div>
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+    Delete All and Sitting?
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete Sitting</h4>
+            </div>
+            <div class="modal-body">
+                <h1>Are you sure you want to Delete? </h1>
+                <p>This will Delete all bookings in this sitting? are you sure you want to delete?</p>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-footer">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="Delete all and close sitting?" class="btn btn-danger" /> |
+                    </form>
+                    <form asp-action="DeleteAll">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="Clear List" class="btn btn-danger" /> |
+                    </form>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section JScript{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+    <script>
+
+        $(function () {
+            $("#sortable2").sortable();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#myModal").modal();
+        });</script>
+}
+
