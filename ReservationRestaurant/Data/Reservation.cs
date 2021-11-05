@@ -10,7 +10,7 @@ namespace ReservationRestaurant.Data
         public DateTime StartTime { get; set; }
         public int Duration { get; set; } // in miuntes
         public DateTime EndTime { get => StartTime.AddMinutes(Duration); }
-        public int Guests { get; set; } 
+        public int Guests { get; set; }
         public List<Table> Tables { get; set; } = new List<Table>();
         public int ReservationStatusId { get; set; }
         public ReservationStatus ReservationStatus { get; set; }

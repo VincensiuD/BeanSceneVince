@@ -26,24 +26,24 @@
             </div>
             <div class="form-group">
                 <label asp-for="StartTime" class="control-label"></label>
-                <input asp-for="StartTime" id="chosenDate" class="form-control"  type="date" />
+                <input asp-for="StartTime" id="chosenDate" class="form-control" type="date" />
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Time1" class="control-label"></label>
-                <input asp-for="Time1" id="time1" class="form-control"  type="time" />
+                <input asp-for="Time1" id="time1" class="form-control" type="time" />
                 <span asp-validation-for="Time1" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Time2" class="control-label"></label>
-                <input asp-for="Time2" id="time2" class="form-control"  type="time" />
+                <input asp-for="Time2" id="time2" class="form-control" type="time" />
                 <span asp-validation-for="Time2" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-            <label asp-for="EndTime" class="control-label"></label>
-            <input asp-for="EndTime" class="form-control" />
-            <span asp-validation-for="EndTime" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="EndTime" class="control-label"></label>
+                    <input asp-for="EndTime" class="form-control" />
+                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                </div>*@
 
             <div class="form-group">
                 <label asp-for="Capacity" class="control-label"></label>
@@ -51,9 +51,9 @@
                 <span asp-validation-for="Capacity" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-            <label asp-for="RestaurantId" class="control-label"></label>
-            <select asp-for="RestaurantId" class ="form-control" asp-items="ViewBag.RestaurantId"></select>
-        </div>*@
+                    <label asp-for="RestaurantId" class="control-label"></label>
+                    <select asp-for="RestaurantId" class ="form-control" asp-items="ViewBag.RestaurantId"></select>
+                </div>*@
 
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
@@ -94,7 +94,7 @@
 
             if (selectedSitting == 1) {
                 begTime = "07:00:00"
-                endTime = "11:00:00"            
+                endTime = "11:00:00"
             }
             else if (selectedSitting == 2) {
                 begTime = "12:00:00";
@@ -103,21 +103,21 @@
             }
             else if (selectedSitting == 3) {
                 begTime = "17:30:00";
-                endTime = "21:30:00"              
+                endTime = "21:30:00"
             }
             else if (selectedSitting == 4) {
                 begTime = "00:00:00";
                 endTime = "23:59:59"
             }
-          
+
             //$.ajax({
             //    type: "GET",
             //    url: "Create",
             //    data: JSON.stringify({selectedSitting }),
             //    contentType: "Application/json",
             //    success: function (result) {
-                    $("#time1").val(begTime);
-                    $("#time2").val(endTime);
+            $("#time1").val(begTime);
+            $("#time2").val(endTime);
             //    }
 
             //})

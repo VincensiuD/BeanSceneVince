@@ -10,13 +10,13 @@ namespace ReservationRestaurant.Models.Reservation
 {
     public class PreCreate
     {
-        [Display(Name ="Date")]
+        [Display(Name = "Date")]
         [Required(ErrorMessage = "Please select Date")]
         public string StartTime { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "The field {0} must be at least {1}.")]
         public int Guests { get; set; } = 1;
-        
+
         public SelectList SittingTypeSL { get; set; }
         [Display(Name = "Sitting")]
         [Required(ErrorMessage = "Please select sitting")]

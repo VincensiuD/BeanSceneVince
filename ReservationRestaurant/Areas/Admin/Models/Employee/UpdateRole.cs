@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReservationRestaurant.Areas.Admin.Models.Employee
 {
-    public class UpdateRole:Update
+    public class UpdateRole : Update
     {
         public string Title { get; set; }
     }

@@ -14,7 +14,7 @@ namespace ReservationRestaurant.Models.Reservation
         [Display(Name = "Start Time")]
         public String StartTime { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "The field {0} must be at least {1}.")]
-        public int Guests { get; set; }
+        public int Guests { get; set; } = 1;// default value = 2
         [Required(ErrorMessage = "Person - FirstName: Required")]
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Person - LastName: Required")]
@@ -42,7 +42,6 @@ namespace ReservationRestaurant.Models.Reservation
         public SelectList TimeSL { get; set; }
         [Display(Name = "Start Time")]
         public string TimeSlot { get; set; }
-      
         
 
     }
