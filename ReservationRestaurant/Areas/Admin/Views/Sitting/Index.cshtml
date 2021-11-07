@@ -7,14 +7,14 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-sandy">Create New</a>
 </p>
 <br />
 @Html.ActionLink("Sort by Name", "Index", new { sortOrder = ViewBag.NameSortParm }, new { @class = " btn btn-primary" })
 @Html.ActionLink("Sort by StartDate", "Index", new { sortOrder = ViewBag.DateSortParm }, new { @class = " btn btn-primary" })
 @Html.ActionLink("Sort by SittingType", "Index", new { sortOrder = ViewBag.TypeSortParm }, new { @class = " btn btn-primary" })
 @Html.ActionLink("Sort by IsOpen", "Index", new { sortOrder = ViewBag.BoolSortParm }, new { @class = " btn btn-primary" })
-<table class="table">
+<table class="table table-sm" style="background-color:antiquewhite">
     <thead>
         <tr>
             <th>
@@ -22,12 +22,12 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
+            </th> 
+            <th>
+                Date
             </th>
             <th>
-                 Date
-            </th>
-            <th>
-               Start Time
+                Start Time
             </th>
             <th>
                 End Time
@@ -38,18 +38,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.Vacancies)
             </th>
-
             <th>
                 Sitting Type
             </th>
             <th>
-                Is Closed?
+               Is Closed?
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
@@ -60,7 +60,7 @@
             <td>
                 @item.StartTime.ToShortDateString()
             </td>
-            <td >
+            <td>
                 @item.StartTime.ToShortTimeString()
             </td>
             <td>
@@ -72,7 +72,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Vacancies)
             </td>
-
             <td>
                 @Html.DisplayFor(modelItem => item.SittingType.Name)
             </td>
@@ -85,14 +84,13 @@
                 <td>Open</td>
             }
             <td>
-                <a asp-action="Update" asp-route-id="@item.Id">Edit</a> ||
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> ||
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> ||
-                <a asp-action="ReservationList" asp-route-id="@item.Id">Reservation List</a>||
-
-                <a asp-action="Report" asp-route-id="@item.Id">View Report</a>
+                <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a> 
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy">Delete</a> 
+                <a asp-action="ReservationList" asp-route-id="@item.Id" class="btn btn-sandy">Reservation List</a> 
+                <a asp-action="Report" asp-route-id="@item.Id" class="btn btn-sandy">View Report</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

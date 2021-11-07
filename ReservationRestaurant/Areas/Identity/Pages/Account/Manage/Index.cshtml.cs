@@ -20,8 +20,7 @@ namespace ReservationRestaurant.Areas.Identity.Pages.Account.Manage
         public IndexModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            ApplicationDbContext context
-            )
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -30,7 +29,6 @@ namespace ReservationRestaurant.Areas.Identity.Pages.Account.Manage
 
         public string Username { get; set; }
         public int PersonId { get; set; }
-
         public int ReservationCount { get; set; }
 
         [TempData]
@@ -44,7 +42,7 @@ namespace ReservationRestaurant.Areas.Identity.Pages.Account.Manage
             [Required]
             [Phone]
             [StringLength(11, ErrorMessage = "Must be a Valid Phone Number", MinimumLength = 10)]
-            [Display(Name = "Phone Number")]
+            [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
         }
 
@@ -61,7 +59,6 @@ namespace ReservationRestaurant.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber
-
             };
         }
 
@@ -72,8 +69,6 @@ namespace ReservationRestaurant.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
-
             await LoadAsync(user);
             return Page();
         }

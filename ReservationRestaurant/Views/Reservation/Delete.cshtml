@@ -12,7 +12,7 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Person)
+            Person Name
         </dt>
         <dd class="col-sm-10">
             @Model.Person.FirstName @Model.Person.LastName
@@ -30,10 +30,16 @@
             @Html.DisplayFor(model => model.Person.Email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
+           Date
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
+           @Model.StartTime.ToShortDateString()
+        </dd>
+        <dt class="col-sm-2">
+           Start Time
+        </dt>
+        <dd class="col-sm-10">
+           @Model.StartTime.ToShortTimeString()
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Duration)
@@ -48,7 +54,7 @@
             @Html.DisplayFor(model => model.Guests)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ReservationStatus)
+            Reservation Status
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ReservationStatus.Name)
@@ -60,13 +66,13 @@
             @Html.DisplayFor(model => model.Sitting.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Sitting.SittingType)
+            Sitting Type
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Sitting.SittingType.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SpecialRequirement)
+            Special Requirement
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SpecialRequirement)
@@ -86,19 +92,19 @@
         @if (User.IsInRole("Manager"))
         {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ReservationOrigin)
+                Reservation Origin
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.ReservationOrigin.Name)
             </dd>
         }
-    </dl>  
+    </dl>
     <form asp-action="Delete">
-        <input type="submit" value="Delete" class="btn btn-danger" name="Delete-Button"/> |
-        <a asp-action="History">Back to My Reservation List</a> | 
+        <input type="submit" value="Delete" class="btn btn-danger" name="Delete-Button" /> 
+        <a asp-action="History" class="btn btn-sandy">Back to My Reservation List</a> 
         @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
         {
-            <a asp-action="Index">Back to Reservations List</a>
+            <a asp-action="Index" class="btn btn-sandy">Back to Reservations List</a>
         }
         <input type="hidden" asp-for="Id" />
     </form>

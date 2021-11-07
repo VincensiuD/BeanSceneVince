@@ -8,7 +8,6 @@
 
 <h4>Sitting</h4>
 <hr />
-
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -26,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="StartTime" class="control-label"></label>
-                <input asp-for="StartTime" id="chosenDate" class="form-control" type="date" />
+                <input asp-for="StartTime" id="chosenDate" class="form-control" type="date"  />
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,45 +38,31 @@
                 <input asp-for="Time2" id="time2" class="form-control" type="time" />
                 <span asp-validation-for="Time2" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                    <label asp-for="EndTime" class="control-label"></label>
-                    <input asp-for="EndTime" class="form-control" />
-                    <span asp-validation-for="EndTime" class="text-danger"></span>
-                </div>*@
-
             <div class="form-group">
                 <label asp-for="Capacity" class="control-label"></label>
                 <input asp-for="Capacity" class="form-control" />
                 <span asp-validation-for="Capacity" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                    <label asp-for="RestaurantId" class="control-label"></label>
-                    <select asp-for="RestaurantId" class ="form-control" asp-items="ViewBag.RestaurantId"></select>
-                </div>*@
-
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
                 <input asp-for="Amount" class="form-control" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
-
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsClosed" /> @Html.DisplayNameFor(model => model.IsClosed)
                 </label>
             </div>
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-
-            <p id="validationMessage"> @ViewBag.ValidationMessage</p>
+            <p id="validationMessage">@ViewBag.ValidationMessage</p>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-sandy">Back to Sitting List</a>
 </div>
 
 @section Scripts {
@@ -116,8 +101,8 @@
             //    data: JSON.stringify({selectedSitting }),
             //    contentType: "Application/json",
             //    success: function (result) {
-            $("#time1").val(begTime);
-            $("#time2").val(endTime);
+                    $("#time1").val(begTime);
+                    $("#time2").val(endTime);
             //    }
 
             //})
