@@ -15,7 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 
@@ -39,32 +39,51 @@ namespace ReservationRestaurant
             //    cfg.CreateMap<Models.Sitting.Update, Data.Sitting>().ReverseMap();
             //});
 
-
-            //globalisation
+            //globalisation for Azure Date dd/mm/yyyy problem
             services.AddMvc()
-                    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+            .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+
+
 
             //object p = services.AddPortableObjectLocalization();
+
+
 
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new List<CultureInfo>
-            {
+                {
                 new CultureInfo("en-AU"),
                 new CultureInfo("en-GB"),
-            };
-
+                };
                 options.DefaultRequestCulture = new RequestCulture("en-GB");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
+
+
+
             services.AddScoped<PersonService>();
-            services.AddTransient<iEmailService, SendGridEmailService>();
+            services.AddTransient<iEmailService, SendGridEmailService>();// for Email Services
+
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                  .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+            // Huda check this website:https://gavilan.blog/2021/05/19/fixing-the-error-a-possible-object-cycle-was-detected-in-different-versions-of-asp-net-core/
+
+            services.AddControllers().AddJsonOptions(x =>
+                                        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
+            //From Api class 16-09-2021 Video we add this---> step one
+            services.AddCors();
+
+
+
             services.AddControllersWithViews();
         }
 
@@ -87,9 +106,19 @@ namespace ReservationRestaurant
 
             app.UseRouting();
 
-            //globalisation
-            app.UseRequestLocalization();
 
+            //From Api class 16-09-2021 Video we add this---> step two
+            app.UseCors(x =>
+            {
+                x.AllowAnyMethod()
+                 .AllowAnyHeader()
+                 .AllowCredentials()
+                 .SetIsOriginAllowed(o => true);
+            });
+
+
+
+            app.UseRequestLocalization();
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -106,7 +135,6 @@ namespace ReservationRestaurant
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
-
             createRoles(serviceProvider);
         }
 

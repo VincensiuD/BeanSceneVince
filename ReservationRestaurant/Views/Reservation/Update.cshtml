@@ -12,8 +12,8 @@
             <div>Reservation For: @Model.FirstName @Model.LastName</div>
             <div>Email: @Model.Email</div>
             <div>Phone Number: @Model.PhoneNumber</div>
-            <div>Date and Time: @Model.ReservationStartDateTime </div>
-            <div>Sitting Type: @Model.Sitting.SittingType.Name  -- Sitting Name: @Model.Sitting.Name</div>
+            <div>Date and Time: @Model.ReservationStartDateTime.ToShortDateString() @Model.ReservationStartDateTime.ToShortTimeString()</div>
+            <div>Sitting Type: @Model.Sitting.SittingType.Name -- Sitting Name: @Model.Sitting.Name</div>
             <hr />
             <div class="form-group">
                 <label asp-for="Guests" class="control-label"></label>
@@ -25,15 +25,10 @@
                 <input asp-for="SpecialRequirement" class="form-control" />
                 <span asp-validation-for="SpecialRequirement" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="Duration" class="control-label"></label>
-                <input asp-for="Duration" class="form-control" />
-                <span asp-validation-for="Duration" class="text-danger"></span>
-            </div>*@
             @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
             {
                 <div class="form-group">
-                    <label asp-for="ExistingTables" class="control-label">Tables: </label>
+                    <label class="control-label">Tables: </label>
                     @for (int i = 0; i < Model.ExistingTables.Count; i++)
                     {
                         <span> @Model.ExistingTables[i].Name, </span>
@@ -74,24 +69,23 @@
         </form>
     </div>
 </div>
+
 @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
 {
     <div>
-        <a asp-action="Index">Back to Reservation List</a>
+        <a asp-action="Index" class="btn btn-sandy">Back to Reservation List</a>
     </div>
 }
 else
 {
     <div>
-        <a asp-action="History">Back to My Reservation List</a>
+        <a asp-action="History" class="btn btn-sandy">Back to My Reservation List</a>
     </div>
 }
-
-
 @section Styles{
     <link href="~/css/chosen.css" rel="stylesheet" />
-    @*<link href="~/css/prism.css" rel="stylesheet" />*@
-    @*<link href="~/css/style.css" rel="stylesheet" />*@
+    @*<link href="~/css/prism.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />*@
     <style>
         .select,
         .chosen-select,
@@ -119,4 +113,3 @@ else
     </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-

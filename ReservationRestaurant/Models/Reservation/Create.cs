@@ -11,17 +11,17 @@ namespace ReservationRestaurant.Models.Reservation
 {
     public class Create
     {
-        [Display(Name = "Start Time")]
-        public String StartTime { get; set; }
+        [Display(Name = "Date")]
+        public string StartTime { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "The field {0} must be at least {1}.")]
-        public int Guests { get; set; } = 1;// default value = 2
-        [Required(ErrorMessage = "Person - FirstName: Required")]
+        public int Guests { get; set; } = 1;
+        [Required(ErrorMessage = "Person - First Name: Required")]
         public string FirstName { get; set; }
-        [Required(ErrorMessage = "Person - LastName: Required")]
+        [Required(ErrorMessage = "Person - Last Name: Required")]
         public string LastName { get; set; }
         [Required(ErrorMessage = "Person - Email: Required")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Person - PhoneNumber: Required")]
+        [Required(ErrorMessage = "Person - Phone Number: Required")]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
         public int PersonId { get; set; }
@@ -46,4 +46,3 @@ namespace ReservationRestaurant.Models.Reservation
 
     }
 }
-

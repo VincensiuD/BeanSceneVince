@@ -15,7 +15,7 @@ namespace ReservationRestaurant.Areas.Admin.Models.Sitting
         public DateTime EndTime { get; set; }
         public int Capacity { get; set; }
         public SittingType SittingType { get; set;  }
-
+        [Display(Name = "Reservation Count")]
         public int ReservationCount { get; set; }
         [Display(Name = "Number of vanancies")]
         public int Vacanies { get; set;  }

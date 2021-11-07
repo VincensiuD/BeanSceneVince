@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ReservationRestaurant.Data;
 
 namespace ReservationRestaurant.Models.Person
 {
@@ -12,7 +11,5 @@ namespace ReservationRestaurant.Models.Person
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-
-
     }
 }

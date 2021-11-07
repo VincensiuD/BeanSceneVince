@@ -29,10 +29,16 @@
             @Html.DisplayFor(model => model.Person.Email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
+            Date
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
+            @Model.StartTime.ToShortDateString()
+        </dd>
+        <dt class="col-sm-2">
+            Start Time
+        </dt>
+        <dd class="col-sm-10">
+            @Model.StartTime.ToShortTimeString()
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Duration)
@@ -46,14 +52,20 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Guests)
         </dd>
-        <dt style="display:none" class="col-sm-2">
+        <dt class="col-sm-2">
+            Reservation Status
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ReservationStatus.Name)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Sitting)
         </dt>
-        <dd style="display:none" class="col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Sitting.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Sitting.SittingType)
+            Sitting Type
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Sitting.SittingType.Name)
@@ -61,7 +73,7 @@
         @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
         {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ReservationOrigin)
+                Reservation Origin
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.ReservationOrigin.Name)
@@ -78,9 +90,9 @@
                     <span> @item.Name, </span>
                 }
             }
-            </dd>
+        </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SpecialRequirement)
+            Special Requirement
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SpecialRequirement)
@@ -100,23 +112,23 @@
     @if (Model.ReservationStatusId == 1 && User.IsInRole("Member") && !(User.IsInRole("Manager") || User.IsInRole("Employee")))
     {
         <p>
-            <a asp-action="Update" asp-route-id="@Model.Id">Edit Reservation </a> || 
-            <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> || 
-            <a asp-action="History">Go To My Previous Reservarion</a> || 
-            <a asp-controller="Home" asp-action="Index">Home Page</a>
+            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-sandy">Edit Reservation </a> 
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sandy">Delete</a> 
+            <a asp-action="History" class="btn btn-sandy">Go To My Previous Reservarion</a> 
+            <a asp-controller="Home" asp-action="Index" class="btn btn-sandy">Home Page</a>
         </p>
     }
     else if (!(User.IsInRole("Manager") || User.IsInRole("Employee")))
     {
         <p><b>If the reservation status is Pending and you need to modify the reservation, please contact our friendly staff you can call us on: 04 8090 7060</b></p>
-        <a asp-controller="Home" asp-action="Index">Home Page</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-sandy">Home Page</a>
     }
     @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
     {
         <p>
-            <a asp-action="Update" asp-route-id="@Model.Id">Edit Reservation/Admin </a> ||
-            <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> ||
-            <a asp-action="Index">Back to Reservation List</a>
+            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-sandy">Edit Reservation/Admin </a> 
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sandy">Delete</a> 
+            <a asp-action="Index" class="btn btn-sandy">Back to Reservation List</a>
         </p>
     }
 </div>

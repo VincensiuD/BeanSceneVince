@@ -11,20 +11,22 @@ using System.Threading.Tasks;
 
 namespace ReservationRestaurant.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Manager")]
     public class SittingController : AdminAreaBaseController
     {
-        //private Mapper _mapper;//I added this
         public SittingController(ApplicationDbContext context) : base(context)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Models.Sitting.Update, Data.Sitting>().ReverseMap());
             _mapper = new Mapper(config);
         }
+
         #region Index
-        [Authorize(Roles ="Employee")]
-        public IActionResult Index(string sortOrder)
+        [Authorize(Roles = "Employee")]
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var listOfSittings = _context.Sittings.Include(x => x.SittingType).Include(x => x.Restaurant).Include(x => x.Reservations).ToList();
+            var listOfSittings = await _context.Sittings.Include(x => x.SittingType)
+                                                        .Include(x => x.Restaurant)
+                                                        .Include(x => x.Reservations)
+                                                        .ToListAsync();
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name" : "Name";
             ViewBag.DateSortParm = String.IsNullOrEmpty(sortOrder) ? "Date" : "Date";
             ViewBag.TypeSortParm = String.IsNullOrEmpty(sortOrder) ? "Sitting" : "Sitting";
@@ -48,25 +50,20 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                     listOfSittings = listOfSittings.OrderBy(s => s.StartTime).ToList();
                     break;
             }
-
             return View(listOfSittings);
-
         }
         #endregion
 
         #region Create
         [Authorize(Roles = "Manager")]
-
         [HttpGet]
         public IActionResult Create()
         {
             var modelSittingCreate = new Models.Sitting.Create();
-
             return ReturnWithSittingSelectList(modelSittingCreate);
         }
-
         [HttpPost]
-        public IActionResult Create(Models.Sitting.Create modelSittingCreate)
+        public async Task<IActionResult> Create(Models.Sitting.Create modelSittingCreate)
         {
             if (ModelState.IsValid)
             {
@@ -75,19 +72,14 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                 DateTime startingDate = modelSittingCreate.StartTime;
                 TimeSpan timeStart = TimeSpan.Parse(modelSittingCreate.Time1);
                 TimeSpan timeEnd = TimeSpan.Parse(modelSittingCreate.Time2);
-
                 if (timeEnd < timeStart)
                 {
                     ViewBag.ValidationMessage =
                                $"End time should be later than start time";
                     return ReturnWithSittingSelectList(modelSittingCreate);
                 }
-
                 // the code below checking if any sitting has been previously made on that day
-                var existingSitting = _context.Sittings.Where
-                    (x => x.SittingTypeId == modelSittingCreate.SittingTypeId).ToList();
-
-
+                var existingSitting = await _context.Sittings.Where(x => x.SittingTypeId == modelSittingCreate.SittingTypeId).ToListAsync();
                 foreach (var item in existingSitting)
                 {
                     for (int i = 0; i < modelSittingCreate.Amount; i++)
@@ -103,17 +95,12 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                     }
 
                 }
-
                 try
                 {
-
                     DateTime startingDateTime = startingDate.Add(timeStart);
                     DateTime endingDateTime = startingDate.Add(timeEnd);
-
-
                     for (int i = 0; i < modelSittingCreate.Amount; i++)
                     {
-
                         Sitting stg = new Sitting
                         {
                             SittingTypeId = modelSittingCreate.SittingTypeId,
@@ -125,37 +112,29 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                             IsClosed = modelSittingCreate.IsClosed
                         };
                         _context.Sittings.Add(stg);
-                        _context.SaveChanges();
+                        await _context.SaveChangesAsync();
                     }
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception)
                 {
-
                     return ReturnWithSittingSelectList(modelSittingCreate);
                 }
-
             }
             return ReturnWithSittingSelectList(modelSittingCreate);
         }
 
-
         private IActionResult ReturnWithSittingSelectList(Models.Sitting.Create modelSittingCreate)
         {
-            modelSittingCreate.SittingTypeSL
-                            = new SelectList(_context.SittingTypes.ToArray(), nameof(SittingType.Id), nameof(SittingType.Name));
-
-
+            modelSittingCreate.SittingTypeSL = new SelectList(_context.SittingTypes.ToArray(), nameof(SittingType.Id), nameof(SittingType.Name));
             return View(modelSittingCreate);
         }
-
         #endregion
 
         #region Update
         [Authorize(Roles = "Manager")]
-
         [HttpGet]
-        public IActionResult Update(int? id)
+        public async Task<IActionResult> Update(int? id)
         {
             try
             {
@@ -163,14 +142,13 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                 {
                     return StatusCode(400, "Id not found");
                 }
-                var sitting = _context.Sittings.Include(x => x.SittingType).FirstOrDefault(x => x.Id == id);
+                var sitting = await _context.Sittings.Include(x => x.SittingType)
+                                                     .FirstOrDefaultAsync(x => x.Id == id);
                 if (id == null)
                 {
                     return NotFound();
                 }
                 var sittingTypeSL = new SelectList(_context.SittingTypes.ToArray(), nameof(SittingType.Id), nameof(SittingType.Name));
-
-
                 Models.Sitting.Update modelSittingUpdate = new Models.Sitting.Update()
                 {
                     SittingTypeSL = sittingTypeSL,
@@ -181,8 +159,7 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                     Capacity = sitting.Capacity,
                     RestaurantId = 1,
                     Name = sitting.Name,
-                    IsClosed = sitting.IsClosed
-
+                    IsClosed = sitting.IsClosed                   
                 };
                 return View(modelSittingUpdate);
             }
@@ -191,8 +168,9 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                 return StatusCode(500);
             }
         }
+
         [HttpPost]
-        public IActionResult Update(int? id, Models.Sitting.Update modelSittingUpdate)
+        public async Task<IActionResult> Update(int? id, Models.Sitting.Update modelSittingUpdate)
         {
             if (id != modelSittingUpdate.Id)
             {
@@ -200,18 +178,15 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
             }
             if (ModelState.IsValid)
             {
-
                 DateTime startingDate = modelSittingUpdate.StartTime;
                 TimeSpan timeStart = TimeSpan.Parse(modelSittingUpdate.Time1);
                 TimeSpan timeEnd = TimeSpan.Parse(modelSittingUpdate.Time2);
 
                 if (timeEnd < timeStart)
                 {
-                    ViewBag.ValidationMessage =
-                               $"End time should be later than start time";
+                    ViewBag.ValidationMessage = $"End time should be later than start time";
                     return ReturnWithSittingSelectList(modelSittingUpdate);
                 }
-
                 try
                 {
                     Sitting sitting = _mapper.Map<Data.Sitting>(modelSittingUpdate);
@@ -219,11 +194,8 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                     sitting.EndTime = modelSittingUpdate.StartTime.Add(timeEnd);
                     sitting.RestaurantId = 1;
 
-
-
                     _context.Sittings.Update(sitting);
-                    _context.SaveChanges();
-
+                    await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception e)
@@ -234,14 +206,12 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
             modelSittingUpdate.SittingTypeSL = new SelectList(_context.SittingTypes.ToArray(), nameof(SittingType.Id), nameof(SittingType.Name));
             return View(modelSittingUpdate);
         }
-
         #endregion
 
         #region Delete
         [Authorize(Roles = "Manager")]
-
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             try
             {
@@ -249,9 +219,10 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                 {
                     return StatusCode(400, "Id not found");
                 }
-                var sitting = _context.Sittings.Include(x => x.SittingType).Include(x => x.Reservations)
-                                                                            .Include(s => s.Restaurant)
-                                                                            .FirstOrDefault(x => x.Id == id);
+                var sitting = await _context.Sittings.Include(x => x.SittingType)
+                                                     .Include(x => x.Reservations)
+                                                     .Include(s => s.Restaurant)
+                                                     .FirstOrDefaultAsync(x => x.Id == id);
                 if (id == null)
                 {
                     return NotFound();
@@ -263,6 +234,7 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                 return StatusCode(500);
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> Delete(int? id, Sitting sitting)
         {
@@ -283,16 +255,16 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                     {
                         return NotFound();
                     }
-                    //var reservations = await _context.Reservations.Include(r => r.Sitting).Where(r => r.SittingId == sitting.Id)
-                    //                                     .Include(r => r.Person)
-                    //                                     .Include(r => r.ReservationStatus).ToListAsync();
-                    //var sittingList = await _context.Sittings.Include(s => s.Reservations).Where(s => s.Id == sitting.Id)
-                    //                                        .ToListAsync();// the sitting which I want to delete including all the reservation which is belong to this sitting
-
-                    var sittingList = await _context.Sittings.Include(s => s.Reservations).ThenInclude(s=> s.Tables)
-                        .Include(s => s.SittingType)
-                        .Include(s => s.Restaurant).FirstOrDefaultAsync(s => s.Id == sitting.Id);
-
+                    var sittingList = await _context.Sittings.Include(s => s.Reservations).ThenInclude(x => x.Tables)
+                                                            .Include(s => s.SittingType)
+                                                            .Include(s => s.Restaurant)
+                                                            .FirstOrDefaultAsync(s => s.Id == sitting.Id);
+                    //if (sittingList.Reservations.Count > 0)
+                    //{
+                    //    ViewBag.ReservationExist = "This sitting cannot be deleted because it has existing reservations." +
+                    //        "Please delete the reservations before deleting this sitting";
+                    //    return View(sittingList);
+                    //}
                     _context.Sittings.Remove(sittingList);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -300,18 +272,39 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                 catch (Exception e)
                 {
                     return StatusCode(500, e.Message);
-
                 }
             }
             return RedirectToAction("Delete", new { id });
         }
+        #endregion
 
+        #region DeleteAll
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> DeleteAll(int? id) //deletes all reservations in a sitting 
+        {
+            var sitting = await _context.Sittings.Include(s => s.SittingType)
+                                           .Include(s => s.Reservations).ThenInclude(r => r.ReservationStatus)
+                                           .Include(s => s.Reservations).ThenInclude(r => r.ReservationOrigin)
+                                           .Include(s => s.Reservations).ThenInclude(r => r.Person)
+                                           .Include(s => s.Reservations).ThenInclude(r => r.Tables)
+                                           .Include(s => s.Restaurant)
+                                           .FirstOrDefaultAsync(s => s.Id == id);
+            var reservationList = sitting.Reservations.ToList();
+            foreach (var reservation in reservationList)
+            {
+                if (reservation.StartTime < DateTime.Now)
+                {
+                    _context.Reservations.Remove(reservation);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction("ReservationList", new { id });
+        }
         #endregion
 
         #region Details
         [Authorize(Roles = "Manager")]
-
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             try
             {
@@ -319,7 +312,10 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                 {
                     return StatusCode(400, "Id not found");
                 }
-                var sitting = _context.Sittings.Include(x => x.SittingType).Include(x => x.Restaurant).Include(s => s.Reservations).FirstOrDefault(x => x.Id == id);
+                var sitting = await _context.Sittings.Include(x => x.SittingType)
+                                                      .Include(x => x.Restaurant)
+                                                      .Include(s => s.Reservations)
+                                                      .FirstOrDefaultAsync(x => x.Id == id);
                 if (id == null)
                 {
                     return NotFound();
@@ -331,12 +327,10 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                 return StatusCode(500);
             }
         }
-
         #endregion
 
         #region Report
         [Authorize(Roles = "Manager")]
-
         public async Task<IActionResult> Report(int? id)
         {
             try
@@ -403,52 +397,21 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                 return StatusCode(500);
             }
         }
-
         #endregion
-        #region ReservationList
-        [Authorize(Roles = "Manager,Employee")]
 
-        public IActionResult ReservationList(int? id)
+        #region ReservationList
+        [Authorize(Roles = "Employee")]
+        public async Task<IActionResult> ReservationList(int? id)
         {
-            //Here we have to include the reservationStatus , ReservationRegion and Person which are in the ReservationList to make it visable in the view
-            // Or Can we pass it as ViewwBag or ViewData
-            var sitting = _context.Sittings.Include(s => s.SittingType)
+            var sitting = await _context.Sittings.Include(s => s.SittingType)
                                             .Include(s => s.Reservations).ThenInclude(r => r.ReservationStatus)
                                             .Include(s => s.Reservations).ThenInclude(r => r.ReservationOrigin)
                                             .Include(s => s.Reservations).ThenInclude(r => r.Person)
                                             .Include(s => s.Restaurant)
-                                            .FirstOrDefault(s => s.Id == id);
-            //var sitting = _context.Sittings.Include(x => x.Reservations)
-            //                                .FirstOrDefault(x => x.Id == id);
+                                            .FirstOrDefaultAsync(s => s.Id == id);
             var reservationList = sitting.Reservations.ToList();
             return View(sitting);
         }
-
-        #endregion
-        #region DeleteAll
-        [Authorize(Roles = "Manager")]
-
-        public async Task<IActionResult> DeleteAll(int? id) //deletes all reservations in a sitting 
-        {
-            var sitting = await _context.Sittings.Include(s => s.SittingType)
-                                           .Include(s => s.Reservations).ThenInclude(r => r.ReservationStatus)
-                                           .Include(s => s.Reservations).ThenInclude(r => r.ReservationOrigin)
-                                           .Include(s => s.Reservations).ThenInclude(r => r.Person)
-                                           .Include(s => s.Reservations).ThenInclude(r => r.Tables)
-                                           .Include(s => s.Restaurant)
-                                           .FirstOrDefaultAsync(s => s.Id == id);
-            //var sitting = _context.Sittings.Include(x => x.Reservations)
-            //                                .FirstOrDefault(x => x.Id == id);
-            var reservationList = sitting.Reservations.ToList();
-            foreach (var item in reservationList)
-            {
-                _context.Remove(item);
-            }
-            _context.SaveChanges();
-
-            return RedirectToAction("ReservationList", new { id });
-        }
-
         #endregion
     }
 }

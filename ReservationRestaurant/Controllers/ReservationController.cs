@@ -32,7 +32,7 @@ namespace ReservationRestaurant.Controllers
             _iEmailService = iEmailService;
         }
         #region Index
-        [Authorize(Roles = "Manager, Employee")]
+        [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Index(string searchString, string option, string sortOrder)
         {
             var reservation = await _context.Reservations.Include(r => r.Person)
@@ -126,7 +126,6 @@ namespace ReservationRestaurant.Controllers
         }
 
 
-
         [HttpPost]
         public async Task<IActionResult> PreCreate(Models.Reservation.PreCreate preCreate)
         {
@@ -140,7 +139,6 @@ namespace ReservationRestaurant.Controllers
 
                     if (preCreate.Guests < 1)
                     {
-
                         preCreate.Message = $"The number of guest has to be bigger than 1";
                         ViewBagOpenSitting(allSitting);
                         return InsertSelectList(preCreate);
@@ -150,7 +148,6 @@ namespace ReservationRestaurant.Controllers
                     var selectedSitting = allSitting.FirstOrDefault(x => x.StartTime.ToShortDateString() == dateSelected.ToShortDateString() && x.SittingTypeId == preCreate.SittingTypeId);
                     if (selectedSitting == null)
                     {
-
                         preCreate.Message = $"The selected day ({dateSelected.ToShortDateString()}) doesn't have that particular sittings. " +
                             "Please contact the restaurant to check if we can accommodate your request";
                         ViewBagOpenSitting(allSitting);
@@ -158,7 +155,6 @@ namespace ReservationRestaurant.Controllers
                     }
                     if (selectedSitting.IsClosed == true || selectedSitting.Vacancies < preCreate.Guests)
                     {
-
                         preCreate.Message = $"The sitting ({selectedSitting.SittingType.Name}) for selected day is full. " +
                             "Please contact the restaurant to check if we can accommodate your request";
                         ViewBagOpenSitting(allSitting);
@@ -182,10 +178,8 @@ namespace ReservationRestaurant.Controllers
                     var sittingList2 = await _context.Sittings.Include(x => x.SittingType).ToListAsync();
                     string maximumBookingDate2 = JQueryDateSetting(sittingList2);
                     preCreate.AmountOfDaysForCalendar = maximumBookingDate2;
-
                     preCreate.Message = $"The booking cannot be made, please ensure all the field has been completed correctly" +
                         " and the booking date format has to be dd-mm-yyyy";
-
                     ViewBagOpenSitting(sittingList2);
 
                     return InsertSelectList(preCreate);
@@ -214,7 +208,6 @@ namespace ReservationRestaurant.Controllers
                 && x.StartTime > DateTime.Today && x.IsClosed == false);
 
             List<string> availableDates = new List<string>();
-
             foreach (var item in openingList)
             {
                 string day = item.StartTime.Day.ToString("00");
@@ -224,9 +217,7 @@ namespace ReservationRestaurant.Controllers
                 string completeDate = day + "-" + month + "-" + year;
                 availableDates.Add(completeDate);
             }
-
             return availableDates;
-
         }
 
         private static string JQueryDateSetting(List<Sitting> sittingList)
@@ -244,7 +235,6 @@ namespace ReservationRestaurant.Controllers
             {
                 allDatesString[i] = today.AddDays(i).ToShortDateString();
             }
-
             return maximumBookingDate;
         }
 
@@ -272,7 +262,7 @@ namespace ReservationRestaurant.Controllers
 
                 SelectList timeSlotSL = CreateTimeSlotList(sitting);
 
-                var m = new Models.Reservation.Create // here we create reservation model instance and assign default value for the guests
+                var m = new Models.Reservation.Create // here we create reservation model instance
                 {
                     Guests = mo.Guests,
                     StartTime = mo.StartTime,
@@ -282,9 +272,7 @@ namespace ReservationRestaurant.Controllers
                 };
                 if (User.Identity.IsAuthenticated && !(User.IsInRole("Manager") || User.IsInRole("Employee")))   // if the user has logged in
                 {
-
                     var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
                     var person = await _context.People.FirstOrDefaultAsync(p => p.UserId == user.Id);
                     if (person != null)
                     {
@@ -303,7 +291,6 @@ namespace ReservationRestaurant.Controllers
 
 
                 return View(m);
-
             }
             catch (Exception)
             {
@@ -346,11 +333,9 @@ namespace ReservationRestaurant.Controllers
                 {
                     ViewBag.Validation = $"Our shop is closing before {selectedSitting.EndTime.ToLongDateString()}" +
                         "Please book earlier";
-
                     m.TimeSL = CreateTimeSlotList(selectedSitting);
                     List<ReservationOrigin> bookingOrigin1 = _context.ReservationOrigins.ToList();
                     ViewBag.ReservationOriginId = new SelectList(bookingOrigin1, "Id", "Name");
-
                     return View(m);
                 }
 
@@ -381,15 +366,11 @@ namespace ReservationRestaurant.Controllers
                         .Where(x => x.Value.Errors.Count > 0)
                         .Select(x => new { x.Key, x.Value.Errors })
                         .ToArray();
-
                 Sitting sitting = _context.Sittings.FirstOrDefault(s => s.Id == m.SittingId);
-
                 m.TimeSL = CreateTimeSlotList(sitting);
-
             }
             List<ReservationOrigin> bookingOrigin = _context.ReservationOrigins.ToList();
             ViewBag.ReservationOriginId = new SelectList(bookingOrigin, "Id", "Name");
-         
             return View(m);
         }
 
@@ -402,14 +383,12 @@ namespace ReservationRestaurant.Controllers
         //    int amountForLoop = (int)(timeDifference * 4); //times 4 because there are 4timeslots in 1hr
         //    List<(int, DateTime)> timeSlotList = new List<(int, DateTime)>();
 
-
         //    for (int i = 0; i < amountForLoop; i++)
         //    {
         //        int minutesToAdd = 15 * i;
         //        DateTime timeSlot = startingTimeSlot.AddMinutes(minutesToAdd);
         //        (int, DateTime) timeSlotTuple = ((i + 1), timeSlot);
         //        timeSlotList.Add(timeSlotTuple);
-
         //    }
 
         //    var timeSlotSelectList = timeSlotList
@@ -480,63 +459,6 @@ namespace ReservationRestaurant.Controllers
             }
         }
         #endregion
-
-        //public async Task<IActionResult> Search(string option, string search)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrEmpty(search))
-        //        {
-        //            return StatusCode(400, "Search Input is required, can not be empty");
-        //        }
-        //        if (string.IsNullOrEmpty(option))
-        //        {
-        //            return StatusCode(400, "Option Input is required, can not be empty");
-        //        }
-        //        if (option == "ReservationId")
-        //        {
-        //            int resrvationId = int.Parse(search);
-        //            var reservation = await _context.Reservations.Include(r => r.Person)
-        //                                                              .Include(r => r.Sitting)
-        //                                                              .ThenInclude(s => s.SittingType)
-        //                                                              .Include(r => r.ReservationStatus)
-        //                                                              .Include(r => r.ReservationOrigin)
-        //                                                              .Include(r => r.Tables)
-        //                                                              .FirstOrDefaultAsync(r => r.Id == resrvationId);
-        //            if (reservation == null)
-        //            {
-        //                return NotFound();
-        //            }
-        //            return RedirectToAction(nameof(Details), new { reservation.Id });
-        //        }
-        //        else if (option == "Email")
-        //        {
-        //            var person = await _context.People.FirstOrDefaultAsync(p => p.Email == search.Trim().ToLower());
-        //            if (person == null)
-        //            {
-        //                return NotFound();
-        //            }
-        //            return RedirectToAction(nameof(History), new { person.Id });
-        //        }
-        //        else if (option == "Name")
-        //        {
-        //            var person = await _context.People.FirstOrDefaultAsync(p => p.FirstName == search.Trim());
-        //            if (person == null)
-        //            {
-        //                return NotFound();
-        //            }
-        //            return RedirectToAction(nameof(History), new { person.Id });
-        //        }
-        //        else
-        //        {
-        //            return StatusCode(400, "Option Or Search Input is required, can not be empty");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500);
-        //    }
-        //}
 
         #region ReservationHistory
         [Authorize(Roles = "Member")]
@@ -622,9 +544,6 @@ namespace ReservationRestaurant.Controllers
             TableMangements(m, allTables);
             return InsertSelectListsForUpdate(m);
         }
-
-
-
 
         [Authorize(Roles = "Member")]
         [HttpPost]

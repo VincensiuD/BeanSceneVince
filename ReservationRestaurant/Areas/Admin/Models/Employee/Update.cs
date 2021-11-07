@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReservationRestaurant.Areas.Admin.Models.Employee
 {
-    public class Update 
+    public class Update
     {
         public int Id { get; set; }
 
@@ -30,7 +30,6 @@ namespace ReservationRestaurant.Areas.Admin.Models.Employee
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
-
         public string UserId { get; set; }
     }
 }

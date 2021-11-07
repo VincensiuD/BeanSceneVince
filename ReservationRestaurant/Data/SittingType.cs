@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
 namespace ReservationRestaurant.Data
 {
     public class SittingType

@@ -17,16 +17,22 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
+            Date
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
+            @Model.StartTime.ToShortDateString()
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EndTime)
+            Start Time
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EndTime)
+            @Model.StartTime.ToShortTimeString()
+        </dd>
+        <dt class="col-sm-2">
+            End Time
+        </dt>
+        <dd class="col-sm-10">
+            @Model.EndTime.ToShortTimeString()
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Capacity)
@@ -37,7 +43,6 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Vacancies)
         </dt>
-
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Vacancies)
         </dd>
@@ -54,13 +59,13 @@
             @Html.DisplayFor(model => model.Restaurant.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SittingType)
+            Sitting Type
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SittingType.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsClosed)
+            Is Closed
         </dt>
         @if (Model.IsClosed)
         {
@@ -74,10 +79,9 @@
                 Open
             </dd>
         }
-
     </dl>
 </div>
 <div>
-    <a asp-action="Update" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-sandy">Edit</a> 
+    <a asp-action="Index" class="btn btn-sandy">Back to Sitting List</a>
 </div>

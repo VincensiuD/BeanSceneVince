@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<ReservationRestaurant.Data.Sitting>*@
-@model ReservationRestaurant.Data.Sitting
+﻿@model ReservationRestaurant.Data.Sitting
 
 @{
     ViewData["Title"] = "ReservationList";
@@ -12,35 +11,40 @@
 <h3> Start time: @Model.StartTime</h3>
 
 <p>
-    <a asp-area="" asp-controller="Reservation" asp-action="PreCreate" 
-       asp-route-sittingId="@Model.Id">Create New</a>
+    <a asp-area="" asp-controller="Reservation" asp-action="PreCreate"  asp-route-sittingId="@Model.Id" class="btn btn-sandy">Create New</a> 
+    <a asp-action="Index" class="btn btn-sandy">Go Back to Sitting List</a>
 </p>
-<table class="table">
+<hr />
+@*<form asp-action="ReservationList">
+        <input type="submit" value="Delete All Reservation List" class="btn btn-danger" asp-action="ReservationList" asp-route-id="@Model.Id" asp-route-deleteAllRes="true" onclick=""/>
+    </form>*@
+<hr />
+<table class="table table-sm" style="background-color:antiquewhite">
     <thead>
         <tr>
             <th>
                 Id
             </th>
             <th>
-                Start Time
+                Sitting
             </th>
             <th>
-                Duration
+                Date
+            </th>
+            <th>
+                Start Time
             </th>
             <th>
                 Guests
             </th>
             <th>
-                ReservationStatus
+                Reservation Status
             </th>
             <th>
-                ReservationOrigin
+                Reservation Origin
             </th>
             <th>
-                Sitting
-            </th>
-            <th>
-                Person
+                Person Email
             </th>
             <th></th>
         </tr>
@@ -48,51 +52,49 @@
     <tbody id="sortable2">
         @foreach (var item in Model.Reservations)
         {
-            <tr @if (item.ReservationStatus.Name == "Pending") { <text> style="color:red" </text>  } 
-            else if (item.ReservationStatus.Name == "Confirmed") { <text> style="color:blue" </text>  }
-            else if (item.ReservationStatus.Name == "Cancelled") { <text> style="color:grey" </text> }
-            class="ui-state-default"
-
-                >
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Duration)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Guests)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReservationStatus.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReservationOrigin.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sitting.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Person.Email)
-                </td>
-                <td>
-                    <a asp-area="" asp-controller="Reservation" asp-action="Update" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-area="" asp-controller="Reservation" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-area="" asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+        <tr @if (item.ReservationStatus.Name == "Pending") { <text> style="color: saddlebrown" </text>  } 
+            else if (item.ReservationStatus.Name == "Confirmed") { <text> style="color:blue" </text>  } 
+            else if (item.ReservationStatus.Name == "Cancelled") { <text> style="color:red" </text> }
+            class="ui-state-default">
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sitting.Name)
+            </td>
+            <td>
+                @item.StartTime.ToShortDateString()
+            </td>
+            <td>
+                @item.StartTime.ToShortTimeString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Guests)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReservationStatus.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReservationOrigin.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Person.Email)
+            </td>
+            <td>
+                <a asp-area="" asp-controller="Reservation" asp-action="Update" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a> 
+                <a asp-area="" asp-controller="Reservation" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a> 
+                <a asp-area="" asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
-<div>
-    <a asp-area="Admin" asp-controller="Sitting" asp-action="Index"> Back to List </a>
-</div>
+@*<div>
+    <a asp-area="Admin" asp-controller="Sitting" asp-action="Index"> Back to Sitting List </a>
+</div>*@
 
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">
     Delete All and Sitting?
 </button>
 
@@ -127,7 +129,6 @@
     </div>
 </div>
 
-
 @section JScript{
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -147,4 +148,3 @@
             $("#myModal").modal();
         });</script>
 }
-
