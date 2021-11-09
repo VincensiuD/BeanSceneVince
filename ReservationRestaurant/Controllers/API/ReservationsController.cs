@@ -35,13 +35,7 @@ namespace ReservationRestaurant.Controllers.Api
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get()
         {
-            var reservations = await _context.Reservations.Include(r => r.Person)
-                                                       .Include(r => r.Sitting)
-                                                       .ThenInclude(s => s.SittingType)
-                                                       .Include(r => r.ReservationStatus)
-                                                       .Include(r => r.ReservationOrigin)
-                                                       .Include(r => r.Tables)
-                                                       .OrderBy(r => r.Id).ToListAsync();
+            var reservations = await _context.Reservations.ToListAsync();
             if (reservations != null)
             {
                 return Ok(reservations);
@@ -56,11 +50,11 @@ namespace ReservationRestaurant.Controllers.Api
         {
             var reservation = await _context.Reservations.Include(r => r.Person)
                                                        .Include(r => r.Sitting)
-                                                       .ThenInclude(s => s.SittingType)
                                                        .Include(r => r.ReservationStatus)
                                                        .Include(r => r.ReservationOrigin)
-                                                       .Include(r => r.Tables)
-                                                       .OrderBy(r => r.Id).FirstOrDefaultAsync(r => r.Id == id);
+                                                       .Include(r => r.Tables).FirstOrDefaultAsync(r => r.Id == id);
+
+           
             if (reservation != null)
             {
                 return Ok(reservation);

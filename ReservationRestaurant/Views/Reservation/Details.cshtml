@@ -113,7 +113,7 @@
     {
         <p>
             <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-sandy">Edit Reservation </a> 
-            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sandy">Delete</a> 
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a> 
             <a asp-action="History" class="btn btn-sandy">Go To My Previous Reservarion</a> 
             <a asp-controller="Home" asp-action="Index" class="btn btn-sandy">Home Page</a>
         </p>
@@ -127,7 +127,7 @@
     {
         <p>
             <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-sandy">Edit Reservation/Admin </a> 
-            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sandy">Delete</a> 
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a> 
             <a asp-action="Index" class="btn btn-sandy">Back to Reservation List</a>
         </p>
     }

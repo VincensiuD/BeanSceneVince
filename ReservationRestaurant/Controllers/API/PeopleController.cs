@@ -58,6 +58,31 @@ namespace ReservationRestaurant.Controllers.Api
             }
         }
 
+        // GET: People/{email}
+        [HttpGet, Route("Email/{email}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Person))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetByEmail(string? email)
+        {
+            try
+            {
+                if (email ==null)
+                {
+                    return StatusCode(400, "Email is required");
+                }
+                var person = await _context.People.Include(p => p.Reservations).FirstOrDefaultAsync(p => p.Email == email);
+                if (person == null)
+                {
+                    return NotFound();
+                }
+                return Ok(person);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
+        }
+
         [HttpPost, Route("")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
