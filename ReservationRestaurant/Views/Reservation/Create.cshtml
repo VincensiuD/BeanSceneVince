@@ -7,7 +7,7 @@
 <form asp-action="Create" >
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <h4>Booking for:</h4>
-    <h6>@Model.StartTime</h6>
+    <h5>@Model.StartTime - @Model.SittingType.Name </h5>
     <hr />
     @if (User.IsInRole("Member") && !(User.IsInRole("Manager")|| User.IsInRole("Employee")))
     {

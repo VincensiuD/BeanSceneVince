@@ -253,7 +253,8 @@ namespace ReservationRestaurant.Controllers
 
             try
             {
-                Sitting sitting = await _context.Sittings.FirstOrDefaultAsync(s => s.Id == mo.SittingId);
+                Sitting sitting = await _context.Sittings.Include(s=> s.SittingType)
+                    .FirstOrDefaultAsync(s => s.Id == mo.SittingId);
 
                 if (sitting == null || mo.Guests < 1 || mo.StartTime == null)
                 {
@@ -268,7 +269,8 @@ namespace ReservationRestaurant.Controllers
                     StartTime = mo.StartTime,
                     SittingTypeId = mo.SittingTypeId,
                     SittingId = mo.SittingId,
-                    TimeSL = timeSlotSL
+                    TimeSL = timeSlotSL,
+                    SittingType = sitting.SittingType
                 };
                 if (User.Identity.IsAuthenticated && !(User.IsInRole("Manager") || User.IsInRole("Employee")))   // if the user has logged in
                 {
