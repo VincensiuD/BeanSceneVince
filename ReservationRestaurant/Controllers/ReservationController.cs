@@ -286,10 +286,6 @@ namespace ReservationRestaurant.Controllers
                 }
                     List<ReservationOrigin> bookingOrigin = _context.ReservationOrigins.ToList();
                     ViewBag.ReservationOriginId = new SelectList(bookingOrigin, "Id", "Name");
-
-                
-
-
                 return View(m);
             }
             catch (Exception)
@@ -304,13 +300,9 @@ namespace ReservationRestaurant.Controllers
         {
             Reservation reservation = null;
             var person = await _context.People.FirstOrDefaultAsync(p => p.Email == m.Email);
-            //if(person !=null && person.UserId == null)
-            //{
-            //    // add code advise they must log in // to avoid make a reservation from the same email with different forename
-            //}
             if (ModelState.IsValid)
             {
-                if (person == null)
+                if (!User.Identity.IsAuthenticated)// new user or returned user but both are not member
                 {
                     person = new Person
                     {
@@ -320,6 +312,38 @@ namespace ReservationRestaurant.Controllers
                         Phone = m.PhoneNumber
                     };
                     person = await _personService.UpsertPersonAsync(person, false);
+                }
+                // else if(User.Identity.IsAuthenticated)// true if Member, Employee, Admin log in
+                else
+                {
+                    var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                    if (person is null)//that means the person is new user and we haven't his info in DB--> so Admin or employee try to reserve for new user 
+                    {
+                        person = new Person
+                        {
+                            Email = m.Email,
+                            FirstName = m.FirstName,
+                            LastName = m.LastName,
+                            Phone = m.PhoneNumber
+                        };
+                        person = await _personService.UpsertPersonAsync(person, false);
+                    }
+                    else
+                    {
+                        if (person.UserId != user.Id)// true if the employee or admin try to reserve for members or for returned users 
+                        {
+                            person = new Person
+                            {
+                                Email = m.Email,
+                                FirstName = m.FirstName,
+                                LastName = m.LastName,
+                                Phone = m.PhoneNumber,
+                                UserId = person.UserId
+                            };
+                            person = await _personService.UpsertPersonAsync(person, true);
+                        }
+                    }
+
                 }
                 string selectedDate = m.StartTime; //selectedDate as astring
                 string selectedTime = m.TimeSlot;//get the time portion of the timeslot - still a string at this stage

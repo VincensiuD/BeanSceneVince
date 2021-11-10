@@ -18,7 +18,19 @@ namespace ReservationRestaurant.Service
         public async Task<Person> UpsertPersonAsync (Person data, bool update)
         {
             var person = await _context.People.FirstOrDefaultAsync(p => p.Email == data.Email);
-            if(person == null)
+            if (person != null)
+            {
+                person.FirstName = data.FirstName;
+                person.LastName = data.LastName;
+                person.Email = data.Email;
+                person.Phone = data.Phone;
+                if (update)
+                {
+                    person.UserId = data.UserId;
+                }
+
+            }
+            if (person == null)
             {
                 person = new Person
                 {
@@ -30,15 +42,7 @@ namespace ReservationRestaurant.Service
                 };
                 _context.People.Add(person);
             }
-            if (person != null && update)
-            {
-                person.FirstName = data.FirstName;
-                person.LastName = data.LastName;
-                person.Email = data.Email;
-                person.Phone = data.Phone;
-                person.UserId = data.UserId;
-                
-            }
+        
             await _context.SaveChangesAsync();
             return person;
         }
