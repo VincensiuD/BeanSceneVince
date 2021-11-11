@@ -392,8 +392,9 @@ namespace ReservationRestaurant.Controllers
                         .Where(x => x.Value.Errors.Count > 0)
                         .Select(x => new { x.Key, x.Value.Errors })
                         .ToArray();
-                Sitting sitting = _context.Sittings.FirstOrDefault(s => s.Id == m.SittingId);
+                Sitting sitting = _context.Sittings.Include(s => s.SittingType).FirstOrDefault(s => s.Id == m.SittingId);
                 m.TimeSL = CreateTimeSlotList(sitting);
+                m.SittingType = sitting.SittingType;
             }
             List<ReservationOrigin> bookingOrigin = _context.ReservationOrigins.ToList();
             ViewBag.ReservationOriginId = new SelectList(bookingOrigin, "Id", "Name");
