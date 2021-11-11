@@ -22,7 +22,7 @@
             </div>
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
             <div>
-                <span>Previous Reservations: @Model.ReservationCount - </span>
+                <label>Previous Reservations Count is @Model.ReservationCount to see your previous reservations list click View History  </label>
                 <a asp-area="" asp-controller="Reservation" asp-action="History" asp-route-id="@Model.PersonId" class="btn btn-sandy"> View History</a>
             </div>
 

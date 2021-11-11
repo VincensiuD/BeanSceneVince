@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ReservationRestaurant.Data;
+using ReservationRestaurant.Service;
 
 namespace ReservationRestaurant.Areas.Identity.Pages.Account.Manage
 {
@@ -16,15 +17,18 @@ namespace ReservationRestaurant.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ApplicationDbContext _context;
+        private readonly PersonService _personService;
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+             PersonService personService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _personService = personService;
         }
 
         public string Username { get; set; }
@@ -96,6 +100,16 @@ namespace ReservationRestaurant.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+                var person = await _context.People.FirstOrDefaultAsync(p => p.Email == user.Email);
+                var newPerson = new Person
+                {
+                    Email = person.Email,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    Phone = Input.PhoneNumber,
+                    UserId = person.UserId
+                };
+                person = await _personService.UpsertPersonAsync(newPerson, true);
             }
 
             await _signInManager.RefreshSignInAsync(user);
