@@ -346,6 +346,7 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                 var emailBookings = 0;
                 var onlineBookings = 0;
                 var walkInBookings = 0;
+                var totalBookings = 0;
 
                 foreach (var item in reservations)
                 {
@@ -355,18 +356,29 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                     {
                         case "1":
                             phoneBookings++;
+                            totalBookings++;
                             break;
                         case "2":
                             emailBookings++;
+                            totalBookings++;
                             break;
                         case "3":
                             onlineBookings++;
+                            totalBookings++;
                             break;
                         case "4":
                             walkInBookings++;
+                            totalBookings++;
                             break;
                     }
                 }
+
+                ViewBag.EmailData = $" {emailBookings}"; //list of strings that you need to show on the chart. as mentioned in the example from c-sharpcorner
+                ViewBag.PhoneData = $" {phoneBookings}";
+                ViewBag.WalkInData = $"{walkInBookings}";
+                ViewBag.OnlineData = $" {onlineBookings}";
+
+                ViewBag.ObjectName = "online bookings, email bookings, walk-in bookings, phone bookings";
 
                 var m = new Models.Sitting.Report
                 {
@@ -383,8 +395,7 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                     NumberOfPhoneBookings = phoneBookings,
                     NumberOfEmailBookings = emailBookings,
                     NumberOfOnlineBookings = onlineBookings,
-                    NumberOfWalkInBookings = walkInBookings
-
+                    NumberOfWalkInBookings = walkInBookings,
                 };
                 if (id == null)
                 {
