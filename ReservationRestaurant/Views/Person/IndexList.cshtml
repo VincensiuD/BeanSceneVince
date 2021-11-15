@@ -1,0 +1,121 @@
+﻿@model IEnumerable<ReservationRestaurant.Models.Person.Details>
+
+@{
+    ViewData["Title"] = "IndexList";
+}
+
+<h1>Users List</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-sandy">Create New</a>
+    <a asp-action="Index" class="btn btn-sandy">Back </a>
+</p>
+<div class="card bg-transparent">
+    <div class="card-body">
+        <form asp-action="Index" method="get" style="border: solid 3px saddlebrown; padding: 5px; ">
+            <div class="form-actions no-color">
+                <p style="font-weight:bold;">
+                    <label>Search Option:</label>
+                    <input id="Role" name="option" type="radio" value="Role" checked="checked" />
+                    <label>Role  </label>
+                    <span> </span>
+                    <input id="Name" name="option" type="radio" value="Name" />
+                    <label>Last Name  </label>
+                    <br />
+                    <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                    <input asp-action="IndexList" type="submit" value="Search" class="btn btn-sandy" />
+                    <a asp-action="IndexList" class="btn btn-sandy">Back to Full User List</a>
+                </p>
+
+                <p>
+                    @Html.ActionLink("Sort by Name", "IndexList", new { sortOrder = ViewBag.NameSortParm, role = ViewData["CurrentRole"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by Role", "IndexList", new { sortOrder = ViewBag.RoleSortParm, role = ViewData["CurrentRole"] }, new { @class = " btn btn-primary" })
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive-sm">
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    Role
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Phone)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr @if (item.Title == "Manager") { <text> style="color:deepskyblue;" </text>  } else if (item.Title == "Employee") { <text> style="color: forestgreen;" </text>  } else if (item.Title == "Member") { <text> style="color:rebeccapurple;" </text>  } else if (item.Title == "User- Not Registered") { <text> style="color:black;" </text> }>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @item.Title
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Styles{
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+            background-color: antiquewhite;
+            font-weight: bold;
+            font-family: verdana,Times New Roman, Times, serif;
+        }
+
+        thead {
+            font-size: large;
+        }
+
+        td {
+            text-align: left;
+            padding: 16px;
+            font-size: medium;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ffdeab;
+        }
+
+        tr {
+            vertical-align: middle;
+        }
+    </style>
+}

@@ -1,0 +1,131 @@
+﻿@model IEnumerable<ReservationRestaurant.Data.Reservation>
+
+@{
+    ViewData["Title"] = "IndexList";
+}
+<h1>Reservations List</h1>
+<p>
+    <a asp-action="PreCreate" class="btn btn-sandy">Create New</a>
+    <a asp-action="Index" class="btn btn-sandy">Back </a>
+</p>
+<div class="card bg-transparent">
+    <div class="card-body">
+        <form asp-action="Index" method="get" style="border: solid 3px saddlebrown; padding: 5px; ">
+            <div class="form-actions no-color">
+                <p style="font-weight:bold;">
+                    <label>Search Option:</label>
+                    <input id="ReservationId" name="option" type="radio" value="ReservationId" checked="checked" />
+                    <label>Reservation Id  </label>
+                    <span> </span>
+                    <input id="Email" name="option" type="radio" value="Email" />
+                    <label>Email  </label>
+                    <span> </span>
+                    <input id="Name" name="option" type="radio" value="Name" />
+                    <label>Last Name  </label>
+                    <br />
+                    <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-sandy" />
+                    <a asp-action="Index" class="btn btn-sandy">Back to Full List</a>
+                </p>
+                <p>
+                    @Html.ActionLink("Sort by Name", "IndexList", new { sortOrder = ViewBag.NameSortParm, status = ViewData["CurrentStatus"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by StartDate", "IndexList", new { sortOrder = ViewBag.DateSortParm, status = ViewData["CurrentStatus"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by SittingType", "IndexList", new { sortOrder = ViewBag.TypeSortParm, status = ViewData["CurrentStatus"] }, new { @class = " btn btn-primary" })
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="table-responsive-sm">
+    <table class="table table-sm" style="background-color:antiquewhite">
+        <thead>
+            <tr>
+                <th>Person Name</th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Start Time
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sitting)
+                </th>
+                <th>
+                    Booked Tables
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr @if (item.ReservationStatus.Name == "Pending") { <text> style="color:forestgreen;" </text>  } else if (item.ReservationStatus.Name == "Confirmed") { <text> style="color:blue;" </text>  } else if (item.ReservationStatus.Name == "Cancelled") { <text> style="color:red;" </text> }>
+                    <td>@item.Person.FirstName @item.Person.LastName</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Person.Email)
+                    </td>
+                    <td>
+                        @item.StartTime.ToShortDateString() @item.StartTime.ToShortTimeString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReservationStatus.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => item.Sitting.Name)
+                    </td>
+                    <td>
+                        <div>
+                            @foreach (var table in item.Tables)
+                            {
+                                <span>
+                                    @table.Name
+                                </span>
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy" name="Delete-Button" type="text/html">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Styles{
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+            background-color: antiquewhite;
+            font-weight: bold;
+            font-family: verdana,Times New Roman, Times, serif;
+        }
+
+        thead {
+            font-size: large;
+        }
+
+        td {
+            text-align: left;
+            padding: 16px;
+            justify-content: center;
+            font-size: medium;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ffdeab;
+        }
+
+        tr {
+            vertical-align: middle;
+        }
+    </style>
+}
