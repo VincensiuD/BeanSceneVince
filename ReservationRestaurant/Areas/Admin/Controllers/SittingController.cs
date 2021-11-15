@@ -21,12 +21,14 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
 
         #region Index
         [Authorize(Roles = "Employee")]
-        public async Task<IActionResult> Index(string sortOrder)
+        public IActionResult Index()
         {
-            var listOfSittings = await _context.Sittings.Include(x => x.SittingType)
-                                                        .Include(x => x.Restaurant)
-                                                        .Include(x => x.Reservations)
-                                                        .ToListAsync();
+            return View();
+        }
+        [Authorize(Roles = "Employee")]
+        public IActionResult IndexList(string sortOrder, string sittingType)
+        {
+            var listOfSittings = GetSittingListByType(sittingType).Result;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name" : "Name";
             ViewBag.DateSortParm = String.IsNullOrEmpty(sortOrder) ? "Date" : "Date";
             ViewBag.TypeSortParm = String.IsNullOrEmpty(sortOrder) ? "Sitting" : "Sitting";
@@ -51,6 +53,26 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
                     break;
             }
             return View(listOfSittings);
+        }
+        private async Task<List<Sitting>> GetSittingListByType(string sittingType)
+        {
+            var listOfSittings = await _context.Sittings.Include(x => x.SittingType)
+                                                        .Include(x => x.Restaurant)
+                                                        .Include(x => x.Reservations)
+                                                        .ToListAsync();
+            switch (sittingType)
+            {
+                case "Breakfast":
+                    return listOfSittings.Where(s => s.SittingType.Name == "Breakfast").ToList();
+                case "Lunch":
+                    return listOfSittings.Where(s => s.SittingType.Name == "Lunch").ToList();
+                case "Dinner":
+                    return listOfSittings.Where(s => s.SittingType.Name == "Dinner").ToList();
+                case "Other":
+                    return listOfSittings.Where(s => s.SittingType.Name == "Other").ToList();
+                default:
+                    return listOfSittings.ToList();
+            }
         }
         #endregion
 

@@ -5,13 +5,12 @@
 }
 
 <h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-12">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
+<h4>Create a new account.</h4>
+<br />
+<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-4" style="border-right-width: 0px;">
             <div class="form-group">
                 <label asp-for="Input.FirstName"></label>
                 <input asp-for="Input.FirstName" class="form-control" />
@@ -27,6 +26,8 @@
                 <input asp-for="Input.Phone" class="form-control" />
                 <span asp-validation-for="Input.Phone" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-4" style="border-left-width: 0px;">
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />
@@ -42,11 +43,26 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+            <div class="form-group" style="padding: 10px; direction: rtl">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-sandy" style=" width: 150px;"> Home Page</a>
+                <button type="submit" class="btn btn-primary" style=" width: 150px;">Register</button>
+            </div>
+        </div>
     </div>
-</div>
+</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+}
+@section Styles{
+    <style>
+        h1, h4 {
+            text-align: center;
+        }
+
+        div.col-md-4 {
+            border: solid 1px lightgrey;
+            padding: 10px;
+        }
+    </style>
 }

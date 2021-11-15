@@ -4,43 +4,68 @@
     ViewData["Title"] = "UpdateRoleToManager";
 }
 
-<h1>Update Role </h1>
+<h1>Update Role to Manager</h1>
 
-<h3>Are you sure you want to update this users role?</h3>
-<div>
-    <h4>Update</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-
-    <form asp-action="UpdateRoleToManager">
-        <input type="hidden" asp-for="Id" />
-        <input type="hidden" asp-for="UserId" />
-        <input type="submit" value="Update Role To Manager" class="btn btn-primary" /> 
-        <a asp-action="Index" class="btn btn-sandy">Back to List</a>
-    </form>
+<h3>Are you sure you want to update this employee role?</h3>
+<br />
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="card" style="width: 40rem; ">
+        <dl class="row card-body">
+            <dt class="col-md-6 text-end">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+            <dt class="col-md-6 text-end">
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+            <dd class="col-md-6 ">
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+            <dt class="col-md-6 text-end">
+                @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+            <dt class="col-md-6 text-end">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+        </dl>
+        <form asp-action="UpdateRoleToManager">
+            <div style="text-align:center;">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="UserId" />
+                <input type="submit" value="Update Role To Manager" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-sandy">Back to Staff List</a>
+            </div>
+        </form>
+    </div>
 </div>
+@section Styles{
+    <style>
+        h1, h3 {
+            text-align: center;
+        }
+
+        dt {
+            font-size: larger;
+        }
+
+        dd {
+            font-size: large;
+        }
+        div.card {
+            border: solid 1px lightgrey;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+    </style>
+}

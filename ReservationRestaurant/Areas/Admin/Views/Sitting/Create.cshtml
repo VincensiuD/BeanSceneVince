@@ -4,14 +4,13 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Sitting</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<h1>Create New Sitting</h1>
+<br />
+<form asp-action="Create">
+    <div class="row">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-4" style="border-right-width: 0px;">
             <div class="form-group">
                 <label asp-for="SittingTypeId" class="control-label"></label>
                 <select asp-for="SittingTypeId" class="form-control" id="sss" asp-items="Model.SittingTypeSL">
@@ -25,9 +24,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="StartTime" class="control-label"></label>
-                <input asp-for="StartTime" id="chosenDate" class="form-control" type="date"  />
+                <input asp-for="StartTime" id="chosenDate" class="form-control" type="date" />
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Capacity" class="control-label"></label>
+                <input asp-for="Capacity" class="form-control" />
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4" style="border-left-width: 0px;">
             <div class="form-group">
                 <label asp-for="Time1" class="control-label"></label>
                 <input asp-for="Time1" id="time1" class="form-control" type="time" />
@@ -39,31 +45,26 @@
                 <span asp-validation-for="Time2" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Capacity" class="control-label"></label>
-                <input asp-for="Capacity" class="form-control" />
-                <span asp-validation-for="Capacity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
                 <input asp-for="Amount" class="form-control" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+            <div class="form-group form-check" style="border: solid 1px saddlebrown; margin:10px; padding-block:5px;">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsClosed" /> @Html.DisplayNameFor(model => model.IsClosed)
+                    <input class="form-check-input" asp-for="IsClosed" style="border: solid 1px saddlebrown; margin-left: 1px;" /> @Html.DisplayNameFor(model => model.IsClosed)
                 </label>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group" style="padding: 10px; direction: rtl">
+                <a asp-action="Index" class="btn btn-sandy">Back to Sitting List</a>
+                <input type="submit" value="Create" class="btn btn-primary" style=" width: 150px;" />
             </div>
             <p id="validationMessage">@ViewBag.ValidationMessage</p>
-        </form>
+        </div>
+        <div class="col-md-2"></div>
     </div>
-</div>
+</form>
 
-<div>
-    <a asp-action="Index" class="btn btn-sandy">Back to Sitting List</a>
-</div>
+
 
 @section Scripts {
     <script>
@@ -101,12 +102,25 @@
             //    data: JSON.stringify({selectedSitting }),
             //    contentType: "Application/json",
             //    success: function (result) {
-                    $("#time1").val(begTime);
-                    $("#time2").val(endTime);
+            $("#time1").val(begTime);
+            $("#time2").val(endTime);
             //    }
 
             //})
         }
     </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+@section Styles{
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        div.col-md-4 {
+            border: solid 1px lightgrey;
+            padding: 10px;
+            background-color:white;
+        }
+    </style>
 }

@@ -23,10 +23,131 @@ namespace ReservationRestaurant.Controllers
         }
 
         // GET: Person
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.People.ToListAsync());
+            return View();
         }
+
+        public IActionResult IndexList(string searchString, string option, string sortOrder, string? role)
+        {
+            var users = GetListofUsers(role).Result.ToList();
+
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentRole"] = role;
+
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name" : "Name";
+            ViewBag.RoleSortParm = String.IsNullOrEmpty(sortOrder) ? "Role" : "Role";
+            switch (sortOrder)
+            {
+                case "Name":
+                    users = users.OrderBy(p => p.LastName).ToList();
+                    break;
+                case "Role":
+                    users = users.OrderBy(p => p.Title).ToList();
+                    break;
+                default:
+                    users = users.OrderBy(p => p.Id).ToList();
+                    break;
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                if (option == "Name")
+                {
+                    users = users.Where(m => m.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+                }
+                else if (option == "Role")
+                {
+                    users = users.Where(m => m.Title.Contains(searchString)).ToList();
+                }
+                else
+                {
+                    return View(users);
+                }
+            }
+            return View(users);
+        }
+
+        private async Task<List<Models.Person.Details>> GetListofUsers(string? role)//string role
+        {
+            IList<IdentityUser> users = null;
+            var person = new Person();
+            var peopleListWithTitle = new List<Models.Person.Details>();
+            var managers = new List<Models.Person.Details>();
+            var employees = new List<Models.Person.Details>();
+            var members = new List<Models.Person.Details>();
+            var nonMembers = new List<Models.Person.Details>();
+            var people = await _context.People.ToListAsync();
+            foreach (var p in people)
+            {
+                if (p.UserId == null)
+                {
+                    var modelPersonDetails = new Models.Person.Details()
+                    {
+                        Id = p.Id,
+                        UserId = p.UserId,
+                        FirstName = p.FirstName,
+                        LastName = p.LastName,
+                        Email = p.Email,
+                        Phone = p.Phone,
+                        Title = "User- Not Registered"
+                    };
+                    peopleListWithTitle.Add(modelPersonDetails);
+                    nonMembers.Add(modelPersonDetails);
+                }
+            }
+            users = await _userManager.GetUsersInRoleAsync("Member");// get all users== 
+            foreach (var user in users)
+            {
+                person = people.Where(p => p.UserId == user.Id).FirstOrDefault();
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var modelPersonDetails = new Models.Person.Details()
+                {
+                    Id = person.Id,
+                    UserId = person.UserId,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    Email = person.Email,
+                    Phone = person.Phone,
+                };
+                for (int i = 0; i < userRoles.Count; i++)
+                {
+                    if (await _userManager.IsInRoleAsync(user, "Manager"))
+                    {
+                        modelPersonDetails.Title = "Manager";
+                        peopleListWithTitle.Add(modelPersonDetails);
+                        managers.Add(modelPersonDetails);
+                        break;
+                    }
+                    else if (await _userManager.IsInRoleAsync(user, "Employee"))
+                    {
+                        modelPersonDetails.Title = "Employee";
+                        peopleListWithTitle.Add(modelPersonDetails);
+                        employees.Add(modelPersonDetails);
+                        break;
+                    }
+                    else if (await _userManager.IsInRoleAsync(user, "Member"))
+                    {
+                        modelPersonDetails.Title = "Member";
+                        peopleListWithTitle.Add(modelPersonDetails);
+                        members.Add(modelPersonDetails);
+                    }
+                }
+            }
+            switch (role)
+            {
+                case "Manager":
+                    return managers;
+                case "Employee":
+                    return employees;
+                case "Member":
+                    return members;
+                case "NotMember":
+                    return nonMembers;
+                default:
+                    return peopleListWithTitle;
+            }
+        }
+
 
         // GET: Person/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -2,19 +2,19 @@
 @{
     ViewData["Title"] = "Update Reservation";
 }
-<h1>Update</h1>
-<h4>Reservation</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Update">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div>Reservation For: @Model.FirstName @Model.LastName</div>
-            <div>Email: @Model.Email</div>
-            <div>Phone Number: @Model.PhoneNumber</div>
-            <div>Date and Time: @Model.ReservationStartDateTime.ToShortDateString() @Model.ReservationStartDateTime.ToShortTimeString()</div>
-            <div>Sitting Type: @Model.Sitting.SittingType.Name -- Sitting Name: @Model.Sitting.Name</div>
-            <hr />
+<h1>Update Reservation Details</h1>
+<br />
+<form asp-action="Update">
+    <h5>Reservation For : @Model.FirstName @Model.LastName</h5>
+    <h5>Email: @Model.Email</h5>
+    <h5>Phone Number : @Model.PhoneNumber</h5>
+    <h5>Date and Time : @Model.ReservationStartDateTime.ToShortDateString() @Model.ReservationStartDateTime.ToShortTimeString()</h5>
+    <h5>Sitting Type : @Model.Sitting.SittingType.Name -- Sitting Name : @Model.Sitting.Name</h5>
+    <br />
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-4" style="border-right-width: 0px;">
             <div class="form-group">
                 <label asp-for="Guests" class="control-label"></label>
                 <input asp-for="Guests" class="form-control" />
@@ -22,9 +22,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="SpecialRequirement" class="control-label"></label>
-                <input asp-for="SpecialRequirement" class="form-control" />
+                <textarea asp-for="SpecialRequirement" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="SpecialRequirement" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-4" style="border-left-width: 0px;">
             @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
             {
                 <div class="form-group">
@@ -37,7 +39,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="SelectedTablesIds" class="control-label"></label>
-                    <select asp-for="SelectedTablesIds" class="form-control chosen-select-width" id="abc" asp-items="Model.Tables" multiple tabindex="16">
+                    <select asp-for="SelectedTablesIds" class="form-control chosen-select-width" asp-items="Model.Tables" multiple tabindex="16">
                         <option value="">-- Select Some Tables --</option>
                     </select>
                 </div>
@@ -52,40 +54,34 @@
                     <span asp-validation-for="ReservationOriginId" class="text-danger"></span>
                 </div>
             }
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group" style="padding: 10px; direction: rtl; text-align: center; background-color: white;">
+                @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
+                {
+                    <a asp-action="IndexList" class="btn btn-sandy">Back to Reservation List</a>
+                }
+                else
+                {
+                    <a asp-action="History" class="btn btn-sandy">Back to My Reservation List</a>
+                }
+                <input type="submit" value="Save" class="btn btn-primary" style=" width: 150px;" />
             </div>
+        </div>
+       
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="PersonId" />
+        <input type="hidden" asp-for="FirstName" />
+        <input type="hidden" asp-for="LastName" />
+        <input type="hidden" asp-for="Email" />
+        <input type="hidden" asp-for="PhoneNumber" />
+        <input type="hidden" asp-for="StartTime" />
+        <input type="hidden" asp-for="SittingId" />
+        <input type="hidden" asp-for="ReservationStartDateTime" />
 
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="PersonId" />
-            <input type="hidden" asp-for="FirstName" />
-            <input type="hidden" asp-for="LastName" />
-            <input type="hidden" asp-for="Email" />
-            <input type="hidden" asp-for="PhoneNumber" />
-            <input type="hidden" asp-for="StartTime" />
-            @*<input type="hidden" asp-for="TimeSlot.Time" />*@
-            <input type="hidden" asp-for="SittingId" />
-            <input type="hidden" asp-for="ReservationStartDateTime" />
-        </form>
     </div>
-</div>
+</form>
 
-@if (User.IsInRole("Manager") || User.IsInRole("Employee"))
-{
-    <div>
-        <a asp-action="Index" class="btn btn-sandy">Back to Reservation List</a>
-    </div>
-}
-else
-{
-    <div>
-        <a asp-action="History" class="btn btn-sandy">Back to My Reservation List</a>
-    </div>
-}
 @section Styles{
     <link href="~/css/chosen.css" rel="stylesheet" />
-    @*<link href="~/css/prism.css" rel="stylesheet" />
-    <link href="~/css/style.css" rel="stylesheet" />*@
     <style>
         .select,
         .chosen-select,
@@ -96,10 +92,19 @@ else
         .chosen-select-width {
             width: 350px;
         }
-    </style>
 
+        h1, h5 {
+            text-align: center;
+        }
+
+        div.col-md-4 {
+            border: solid 1px lightgrey;
+            padding: 10px;
+            background-color: white;
+        }
+
+</style>
 }
-
 @section Scripts {
     <script src="~/js/chosen.jquery.js"></script>
     <script src="~/js/init.js"></script>
