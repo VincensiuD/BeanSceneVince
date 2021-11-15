@@ -10,13 +10,34 @@
     <link href="~/CustomStyle/StyleSheet.css" rel="stylesheet" />
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     @await RenderSectionAsync("Styles", required: false)
+    <style>
+        a.nav-link {
+            font-size: large;
+            font-weight: bold;
+            padding: 16px;
+            margin: 5px;
+        }
 
+        a:hover {
+            color: dimgray;
+        }
+
+        label {
+            font-size: large;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        input, select, textarea {
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand" asp-area="" asp-controller="Reservation" asp-action="PreCreate">
                     <img src="~/Images/BeanSceneLogo4.png" alt="CompanyLogo" />
 
                 </a>
@@ -26,9 +47,6 @@
                 </button>
                 <div id="navbarSupportedContent" class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @*<li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>*@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="PreCreate">Book Now</a>
                         </li>
@@ -38,7 +56,7 @@
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="Employee" asp-action="Index">Staff</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Person" asp-action="Index">Person</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Person" asp-action="Index">Users</a>
                             </li>
                         }
                         @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
@@ -52,7 +70,6 @@
                         }
                         @if (User.IsInRole("Member") && !(User.IsInRole("Employee") || User.IsInRole("Manager")))
                         {
-
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="History">My Reservation History</a>
                             </li>
@@ -81,6 +98,7 @@
     <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     @await RenderSectionAsync("MyScripts", required: false)
     @await RenderSectionAsync("JScript", required: false)

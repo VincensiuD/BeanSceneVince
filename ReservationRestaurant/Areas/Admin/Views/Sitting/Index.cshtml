@@ -1,96 +1,75 @@
-﻿@model IEnumerable<ReservationRestaurant.Data.Sitting>
-
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
+<h1>Sitting Type List</h1>
 <p>
-    <a asp-action="Create" class="btn btn-sandy">Create New</a>
+    <a asp-action="IndexList" asp-route-sittingType="" class="btn btn-sandy">Show All Sitting List</a>
 </p>
-<br />
-@Html.ActionLink("Sort by Name", "Index", new { sortOrder = ViewBag.NameSortParm }, new { @class = " btn btn-primary" })
-@Html.ActionLink("Sort by StartDate", "Index", new { sortOrder = ViewBag.DateSortParm }, new { @class = " btn btn-primary" })
-@Html.ActionLink("Sort by SittingType", "Index", new { sortOrder = ViewBag.TypeSortParm }, new { @class = " btn btn-primary" })
-@Html.ActionLink("Sort by IsOpen", "Index", new { sortOrder = ViewBag.BoolSortParm }, new { @class = " btn btn-primary" })
-<table class="table table-sm" style="background-color:antiquewhite">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th> 
-            <th>
-                Date
-            </th>
-            <th>
-                Start Time
-            </th>
-            <th>
-                End Time
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vacancies)
-            </th>
-            <th>
-                Sitting Type
-            </th>
-            <th>
-               Is Closed?
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @item.StartTime.ToShortDateString()
-            </td>
-            <td>
-                @item.StartTime.ToShortTimeString()
-            </td>
-            <td>
-                @item.EndTime.ToShortTimeString()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vacancies)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SittingType.Name)
-            </td>
-            @if (item.IsClosed)
-            {
-                <td>Closed</td>
-            }
-            else
-            {
-                <td>Open</td>
-            }
-            <td>
-                <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a> 
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy">Delete</a> 
-                <a asp-action="ReservationList" asp-route-id="@item.Id" class="btn btn-sandy">Reservation List</a> 
-                <a asp-action="Report" asp-route-id="@item.Id" class="btn btn-sandy">View Report</a>
-            </td>
-        </tr>
+
+<div class="table-responsive-sm">
+    <table class="table table-sm" style="">
+        <thead>
+            <tr>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><ul class="abc"><li class="abc"><a asp-action="IndexList" asp-route-sittingType="Breakfast">Breakfast</a></li></ul></td>
+            </tr>
+            <tr>
+                <td><ul class="abc"><li class="abc"><a asp-action="IndexList" asp-route-sittingType="Lunch">Lunch</a></li></ul></td>
+            </tr>
+            <tr>
+                <td><ul class="abc"><li class="abc"><a asp-action="IndexList" asp-route-sittingType="Dinner">Dinner</a></li></ul></td>
+            </tr>
+            <tr>
+                <td><ul class="abc"><li class="abc"><a asp-action="IndexList" asp-route-sittingType="Other">Other</a></li></ul></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Styles{
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            background-color: white;
+            font-weight: bold;
+            font-size: large;
+            font-family: verdana,Times New Roman, Times, serif;
         }
-    </tbody>
-</table>
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+            a:hover {
+                color: dimgray;
+            }
+
+        ul.abc {
+            list-style-type: none;
+        }
+
+        li.abc {
+            background: #f0e7c6;
+            margin: 5px;
+            padding: 20px;
+        }
+
+        a.btn {
+            font-size: large;
+            font-weight: bold;
+            padding: 16px;
+            margin: 5px;
+        }
+    </style>
+}

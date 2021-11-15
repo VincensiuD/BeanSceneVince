@@ -33,66 +33,81 @@ namespace ReservationRestaurant.Controllers
         }
         #region Index
         [Authorize(Roles = "Employee")]
-        public async Task<IActionResult> Index(string searchString, string option, string sortOrder)
+        public IActionResult Index()
         {
-            var reservation = await _context.Reservations.Include(r => r.Person)
-                                                       .Include(r => r.Sitting)
-                                                       .ThenInclude(s => s.SittingType)
-                                                       .Include(r => r.ReservationStatus)
-                                                       .Include(r => r.ReservationOrigin)
-                                                       .Include(r => r.Tables)
-                                                       .OrderBy(r => r.Id).ToArrayAsync();
-
-
+            return View();
+        }
+        [Authorize(Roles = "Employee")]
+        public IActionResult IndexList(string searchString, string option, string sortOrder, string status)
+        {
+            var reservations = GetReservationsByStatus(status).Result;
             ViewData["CurrentFilter"] = searchString;
-
+            ViewData["CurrentStatus"] = status;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name" : "Name";
             ViewBag.DateSortParm = String.IsNullOrEmpty(sortOrder) ? "Date" : "Date";
             ViewBag.TypeSortParm = String.IsNullOrEmpty(sortOrder) ? "Sitting" : "Sitting";
-
-
             switch (sortOrder)
             {
                 case "Name":
-                    reservation = reservation.OrderBy(s => s.Person.LastName).ToArray();
+                    reservations = reservations.OrderBy(s => s.Person.LastName).ToList();
                     break;
                 case "Date":
-                    reservation = reservation.OrderBy(s => s.StartTime).ToArray();
+                    reservations = reservations.OrderBy(s => s.StartTime).ToList();
                     break;
                 case "Sitting":
-                    reservation = reservation.OrderBy(s => s.Sitting.SittingTypeId).ToArray();
+                    reservations = reservations.OrderBy(s => s.Sitting.SittingTypeId).ToList();
                     break;
                 default:
-                    reservation = reservation.OrderBy(s => s.Id).ToArray();
+                    reservations = reservations.OrderBy(s => s.Id).ToList();
                     break;
             }
-
-
             if (!String.IsNullOrEmpty(searchString))
             {
                 if (option == "Name")
                 {
-                    reservation = reservation.Where(s => s.Person.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToArray();
+                    reservations = reservations.Where(s => s.Person.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
                 }
 
                 else if (option == "Email")
                 {
-                    reservation = reservation.Where(s => s.Person.Email.Contains(searchString)).ToArray();
+                    reservations = reservations.Where(s => s.Person.Email.Contains(searchString)).ToList();
                 }
 
                 else if (option == "ReservationId")
                 {
-                    reservation = reservation.Where(s => s.Id == int.Parse(searchString)).ToArray();
+                    reservations = reservations.Where(s => s.Id == int.Parse(searchString)).ToList();
                 }
                 else
                 {
-                    return View(reservation);
+                    return View(reservations);
                 }
-
             }
-
-
-            return View(reservation);
+            return View(reservations);
+        }
+        private async Task<List<Reservation>> GetReservationsByStatus(string status)
+        {
+            var allReservation = await _context.Reservations.Include(r => r.Person)
+                                                      .Include(r => r.Sitting)
+                                                      .ThenInclude(s => s.SittingType)
+                                                      .Include(r => r.ReservationStatus)
+                                                      .Include(r => r.ReservationOrigin)
+                                                      .Include(r => r.Tables)
+                                                      .OrderBy(r => r.Id).ToListAsync();
+            switch (status)
+            {
+                case "Pending":
+                    return allReservation.Where(r => r.ReservationStatus.Name == "Pending").ToList();
+                case "Confirmed":
+                    return allReservation.Where(r => r.ReservationStatus.Name == "Confirmed").ToList();
+                case "Cancelled":
+                    return allReservation.Where(r => r.ReservationStatus.Name == "Cancelled").ToList();
+                case "Seated":
+                    return allReservation.Where(r => r.ReservationStatus.Name == "Seated").ToList();
+                case "Complete":
+                    return allReservation.Where(r => r.ReservationStatus.Name == "Complete").ToList();
+                default:
+                    return allReservation.ToList();
+            }
         }
         #endregion
 
@@ -166,7 +181,8 @@ namespace ReservationRestaurant.Controllers
                         Guests = preCreate.Guests,
                         SittingTypeId = preCreate.SittingTypeId,
                         SittingId = selectedSitting.Id,
-                        SittingType = selectedSitting.SittingType
+                        SittingType = selectedSitting.SittingType,
+                        TimeSlot = preCreate.TimeSlot
                     };
 
                     return RedirectToAction(nameof(Create), create);

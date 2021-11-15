@@ -132,7 +132,7 @@ namespace ReservationRestaurant
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Reservation}/{action=PreCreate}/{id?}");
                 endpoints.MapRazorPages();
             });
             createRoles(serviceProvider);

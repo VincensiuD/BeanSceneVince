@@ -22,5 +22,6 @@ namespace ReservationRestaurant.Models.Reservation
         public SittingType SittingType { get; set; }
         public string Message { get; set; }
         public string AmountOfDaysForCalendar { get; set; }
+        public string TimeSlot { get; set; }
     }
 }

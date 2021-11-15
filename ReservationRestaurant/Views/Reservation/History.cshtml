@@ -4,10 +4,9 @@
     ViewData["Title"] = "History";
 }
 
-<h1>History--Reservation List</h1>
-
+<h1>History - Reservation List</h1>
 <p>
-    <a asp-action="PreCreate" class="btn btn-sandy"> Create New </a>  
+    <a asp-action="PreCreate" class="btn btn-sandy"> Create New </a>
     @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
     {
         <a asp-action="Index" class="btn btn-sandy"> Back to Reservation List </a>
@@ -16,37 +15,42 @@
 <table class="table table-sm" style="background-color:antiquewhite">
     <thead>
         <tr>
+            @*<th>
+                    ID
+                </th>*@
+            @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
+            {
+                <th>Person Name</th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Booking Origin
+                </th>
+                <th>
+                    Sitting Type
+                </th>
+            }
             <th>
-                ID
+                Date
             </th>
-            <th>Person Name</th>
             <th>
-                Email
-            </th>
-            <th>
-               Date
-            </th>
-            <th>
-               Start Time
+                Start Time
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Guests)
             </th>
             <th>
-                Reservation Status
+                Booking Status
             </th>
-            <th>
-                Reservation Origin
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Sitting)
             </th>
             <th>
                 Booked Tables
             </th>
-            <th>
-                Sitting Type
-            </th>
+
             <th>
                 Special Requierment
             </th>
@@ -54,58 +58,98 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.Id
-            </td>
-            <td>@item.Person.FirstName @item.Person.LastName</td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Person.Email)
-            </td>
-            <td>
-                @item.StartTime.ToShortDateString()
-            </td>
-            <td>
-                @item.StartTime.ToShortTimeString()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Guests)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReservationStatus.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReservationOrigin.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sitting.Name)
-            </td>
-            <td>
-                <div>
-                    @foreach (var table in item.Tables)
-                    {
-                        <div>
-                            @table.Name
-                        </div>
-                    }
-                </div>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sitting.SittingType.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SpecialRequirement)
-            </td>
-            <td>
-                @if (item.ReservationStatusId == 1 || (User.IsInRole("Manager") || User.IsInRole("Employee")))
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                        @item.Id
+                    </td>*@
+                @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
                 {
-                    <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy">Delete</a>
+                    <td>@item.Person.FirstName @item.Person.LastName</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Person.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReservationOrigin.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sitting.SittingType.Name)
+                    </td>
                 }
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a>
-            </td>
-        </tr>
-}
+                <td>
+                    @item.StartTime.ToShortDateString()
+                </td>
+                <td>
+                    @item.StartTime.ToShortTimeString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Guests)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservationStatus.Name)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sitting.Name)
+                </td>
+                <td>
+                    <div>
+                        @foreach (var table in item.Tables)
+                        {
+                            <span>
+                                @table.Name,
+                            </span>
+                        }
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpecialRequirement)
+                </td>
+                <td>
+                    @if (item.ReservationStatusId == 1 || (User.IsInRole("Manager") || User.IsInRole("Employee")))
+                    {
+                        <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy">Delete</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@section Styles{
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+            background-color: antiquewhite;
+            font-family: verdana,Times New Roman, Times, serif;
+        }
+
+        thead {
+            font-size: large;
+            text-align: center;
+        }
+
+        tr {
+            vertical-align: middle;
+        }
+
+        td {
+            text-align: center;
+            padding: 16px;
+            font-size: medium;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ffdeab;
+        }
+
+        a.btn {
+            margin: 5px;
+        }
+    </style>
+}

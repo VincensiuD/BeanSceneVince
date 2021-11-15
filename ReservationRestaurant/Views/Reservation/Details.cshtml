@@ -4,131 +4,159 @@
     ViewData["Title"] = "Reservation Details Review";
 }
 
-<h1>Review Reservation Details </h1>
-
-<div>
-    <h2 style="text-decoration: underline;">Status :  @Html.DisplayFor(model => model.ReservationStatus.Name) </h2>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Person)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Person.FirstName @Model.Person.LastName
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Person.Phone)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Person.Phone)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Person.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Person.Email)
-        </dd>
-        <dt class="col-sm-2">
-            Date
-        </dt>
-        <dd class="col-sm-10">
-            @Model.StartTime.ToShortDateString()
-        </dd>
-        <dt class="col-sm-2">
-            Start Time
-        </dt>
-        <dd class="col-sm-10">
-            @Model.StartTime.ToShortTimeString()
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Guests)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Guests)
-        </dd>
-        <dt class="col-sm-2">
-            Reservation Status
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ReservationStatus.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Sitting)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Sitting.Name)
-        </dd>
-        <dt class="col-sm-2">
-            Sitting Type
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Sitting.SittingType.Name)
-        </dd>
-        @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
-        {
-            <dt class="col-sm-2">
-                Reservation Origin
+<h1>Reservation Details </h1>
+<h3 style="text-decoration: underline;">Status :  @Html.DisplayFor(model => model.ReservationStatus.Name) </h3>
+<br />
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="card" style="width: 40rem; ">
+        <dl class="row card-body">
+            <dt class="col-md-6 text-end">
+                @Html.DisplayNameFor(model => model.Person)
             </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ReservationOrigin.Name)
+            <dd class="col-md-6">
+                @Model.Person.FirstName @Model.Person.LastName
             </dd>
-        }
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Tables)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.ReservationStatusId != 1)
+            <dt class="col-md-6 text-end">
+                @Html.DisplayNameFor(model => model.Person.Phone)
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.Person.Phone)
+            </dd>
+            <dt class="col-md-6 text-end">
+                @Html.DisplayNameFor(model => model.Person.Email)
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.Person.Email)
+            </dd>
+            <dt class="col-md-6 text-end">
+                Date
+            </dt>
+            <dd class="col-md-6">
+                @Model.StartTime.ToShortDateString()
+            </dd>
+            <dt class="col-md-6 text-end">
+                Start Time
+            </dt>
+            <dd class="col-md-6">
+                @Model.StartTime.ToShortTimeString()
+            </dd>
+            <dt class="col-md-6 text-end">
+                @Html.DisplayNameFor(model => model.Duration)
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.Duration)
+            </dd>
+            <dt class="col-md-6 text-end">
+                @Html.DisplayNameFor(model => model.Guests)
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.Guests)
+            </dd>
+            <dt class="col-md-6 text-end">
+                Reservation Status
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.ReservationStatus.Name)
+            </dd>
+            <dt class="col-md-6 text-end">
+                @Html.DisplayNameFor(model => model.Sitting)
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.Sitting.Name)
+            </dd>
+            <dt class="col-md-6 text-end">
+                Sitting Type
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.Sitting.SittingType.Name)
+            </dd>
+            @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
             {
-                @foreach (var item in Model.Tables)
-                {
-                    <span> @item.Name, </span>
-                }
+                <dt class="col-md-6 text-end">
+                    Reservation Origin
+                </dt>
+                <dd class="col-md-6">
+                    @Html.DisplayFor(model => model.ReservationOrigin.Name)
+                </dd>
             }
-        </dd>
-        <dt class="col-sm-2">
-            Special Requirement
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SpecialRequirement)
-        </dd>
-    </dl>
+            <dt class="col-md-6 text-end">
+                @Html.DisplayNameFor(model => model.Tables)
+            </dt>
+            <dd class="col-md-6">
+                @if (Model.ReservationStatusId != 1)
+                {
+                    @foreach (var item in Model.Tables)
+                    {
+                        <span> @item.Name, </span>
+                    }
+                }
+            </dd>
+            <dt class="col-md-6 text-end">
+                Special Requirement
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.SpecialRequirement)
+            </dd>
+        </dl>
+        <div style="text-align: center; padding-bottom: 20px;">
+            @if (!User.IsInRole("Member"))
+            {
+                <p>
+                    <b>
+                        If you want to make any update on your reservation, please <a class="text-capitalize" asp-area="Identity" asp-page="/Account/Login">Login</a>  or Create account.
+                        <a class="text-capitalize" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    </b>
+                </p>
+            }
+            @if (Model.ReservationStatusId == 1 && User.IsInRole("Member") && !(User.IsInRole("Manager") || User.IsInRole("Employee")))
+            {
+                <p>
+                    <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-sandy" style=" width: 150px;">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" style=" width: 150px;">Delete</a>
+                    <a asp-action="History" class="btn btn-sandy">Go To My Previous Reservarion</a>
+                    @*<a asp-controller="Home" asp-action="Index" class="btn btn-sandy">Home Page</a>*@
+                </p>
+            }
+            else if (!(User.IsInRole("Manager") || User.IsInRole("Employee")))
+            {
+                <p><b>If the reservation status is Pending and you need to modify the reservation, please contact our friendly staff you can call us on: 04 8090 7060</b></p>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-sandy">Home Page</a>
+            }
+            @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
+            {
+                <p>
+                    <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-sandy">Edit Reservation/Admin </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" style=" width: 150px;">Delete</a>
+                    <a asp-action="IndexList" class="btn btn-sandy">Back to Reservation List</a>
+                </p>
+            }
+        </div>
+    </div>
 </div>
-<div>
-    @if (!User.IsInRole("Member"))
-    {
-        <p>
-            <b>
-                If you want to make any update on your reservation, please <a class="text-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>  or Create account.
-                <a class="text-capitalize" asp-area="Identity" asp-page="/Account/Register">Register</a>
-            </b>
-        </p>
-    }
-    @if (Model.ReservationStatusId == 1 && User.IsInRole("Member") && !(User.IsInRole("Manager") || User.IsInRole("Employee")))
-    {
-        <p>
-            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-sandy">Edit Reservation </a> 
-            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a> 
-            <a asp-action="History" class="btn btn-sandy">Go To My Previous Reservarion</a> 
-            <a asp-controller="Home" asp-action="Index" class="btn btn-sandy">Home Page</a>
-        </p>
-    }
-    else if (!(User.IsInRole("Manager") || User.IsInRole("Employee")))
-    {
-        <p><b>If the reservation status is Pending and you need to modify the reservation, please contact our friendly staff you can call us on: 04 8090 7060</b></p>
-        <a asp-controller="Home" asp-action="Index" class="btn btn-sandy">Home Page</a>
-    }
-    @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
-    {
-        <p>
-            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-sandy">Edit Reservation/Admin </a> 
-            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a> 
-            <a asp-action="Index" class="btn btn-sandy">Back to Reservation List</a>
-        </p>
-    }
-</div>
+@section Styles{
+    <style>
+        h1, h3 {
+            text-align: center;
+        }
+
+        dt {
+            font-size: larger;
+        }
+
+        dd {
+            font-size: large;
+        }
+
+        a.text-capitalize {
+            font-size: larger;
+        }
+        div.card {
+            border: solid 1px lightgrey;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+    </style>
+}

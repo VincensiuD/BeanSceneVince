@@ -87,5 +87,37 @@ namespace ReservationRestaurant.Controllers.Api
             return NotFound();
         }
 
+        [HttpGet, Route("Sitting/{sitId}/{dateOnly}")]// the name here in the Route should be the same as it in the Action Param
+
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetSittingById(int sitId, string dateOnly)
+        {
+            try
+            {
+
+
+                DateTime date = DateTime.Parse(dateOnly);
+
+
+                var sitting = _context.Sittings.FirstOrDefault(r => r.SittingTypeId == sitId && r.StartTime.Date == date);
+
+                //var reservation = await _context.Reservations.FirstOrDefaultAsync(r => r.Id == id);
+                if (sitting != null)
+                {
+                    string s1 = sitting.StartTime.ToShortTimeString();
+                    string s2 = sitting.EndTime.ToShortTimeString();
+
+                    var s3 = new { start = s1, end = s2 };
+
+                    return Ok(sitting);
+                }
+                return NotFound();
+            }
+            catch (Exception)
+            {
+
+                return NotFound();
+            }
+        }
     }
 }

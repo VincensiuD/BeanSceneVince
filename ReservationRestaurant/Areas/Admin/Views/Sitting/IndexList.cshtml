@@ -1,0 +1,144 @@
+﻿@model IEnumerable<ReservationRestaurant.Data.Sitting>
+
+    @{
+    ViewData["Title"] = "IndexList";
+    }
+
+    <h1>Sitting List</h1>
+
+    <p>
+        <a asp-action="Create" class="btn btn-sandy">Create New</a>
+        <a asp-action="Index" class="btn btn-sandy">Back </a>
+    </p>
+    <br />
+    <div class="card bg-transparent">
+        <div class="card-body">
+            <form style="border: solid 3px saddlebrown; padding: 5px; ">
+                <p>
+                    @Html.ActionLink("Sort by Name", "IndexList", new { sortOrder = ViewBag.NameSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by StartDate", "IndexList", new { sortOrder = ViewBag.DateSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by SittingType", "IndexList", new { sortOrder = ViewBag.TypeSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by IsOpen", "IndexList", new { sortOrder = ViewBag.BoolSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive-sm">
+        <table class="table table-sm" style="background-color:antiquewhite">
+            <thead>
+                <tr>
+                    @*
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Start Time
+                    </th>
+                    <th>
+                        End Time
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Capacity)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Vacancies)
+                    </th>
+                    <th>
+                        Sitting Type
+                    </th>
+                    <th>
+                        Is Closed?
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    @*
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @item.StartTime.ToShortDateString()
+                    </td>
+                    <td>
+                        @item.StartTime.ToShortTimeString()
+                    </td>
+                    <td>
+                        @item.EndTime.ToShortTimeString()
+                    </td>
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.Capacity)
+                    </td>
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.Vacancies)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SittingType.Name)
+                    </td>
+                    @if (item.IsClosed)
+                    {
+                    <td>Closed</td>
+                    }
+                    else
+                    {
+                    <td>Open</td>
+                    }
+                    <td>
+                        <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy">Delete</a>
+                        <a asp-action="ReservationList" asp-route-id="@item.Id" class="btn btn-sandy">Reservation List</a>
+                        <a asp-action="Report" asp-route-id="@item.Id" class="btn btn-sandy">View Report</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @section Styles{
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+            background-color: antiquewhite;
+            font-family: verdana,Times New Roman, Times, serif;
+        }
+
+        thead {
+            font-size: large;
+        }
+
+        td {
+            text-align: left;
+            padding: 16px;
+            font-size: medium;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ffdeab;
+        }
+
+        a.btn {
+            margin: 5px;
+        }
+
+        tr {
+            vertical-align: middle;
+        }
+    </style>
+    }

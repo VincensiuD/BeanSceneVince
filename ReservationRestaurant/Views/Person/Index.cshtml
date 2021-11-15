@@ -1,64 +1,75 @@
-﻿@model IEnumerable<ReservationRestaurant.Data.Person>
-
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
+<h1>User List</h1>
 <p>
-    <a asp-action="Create" class="btn btn-sandy">Create New</a>
+    <a asp-action="IndexList" asp-route-role="All" class="btn btn-sandy">Show All Users</a>
 </p>
-<table class="table table-sm" style="background-color:antiquewhite">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-               Is a Member
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+
+<div class="table-responsive-sm">
+    <table class="table table-sm" style="">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @if(item.UserId == null)
-                     {
-                        <div>No</div>
-                     }
-                    else { <div>Yes</div>}
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a> 
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a> 
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy">Delete</a>
-                </td>
             </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="color:deepskyblue;"><ul class="abc"><li class="abc"><a asp-action="IndexList" asp-route-role="Manager">Manager</a></li></ul></td>
+            </tr>
+            <tr>
+                <td style="color: forestgreen;"><ul class="abc"><li class="abc"><a asp-action="IndexList" asp-route-role="Employee">Employee</a></li></ul></td>
+            </tr>
+            <tr>
+                <td style="color:rebeccapurple;"><ul class="abc"><li class="abc"><a asp-action="IndexList" asp-route-role="Member">Member</a></li></ul></td>
+            </tr>
+            <tr>
+                <td style="color:black;"><ul class="abc"><li class="abc"><a asp-action="IndexList" asp-route-role="NotMember">User- Not Registered</a></li></ul></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Styles{
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            background-color: white;
+            font-weight: bold;
+            font-size: large;
+            font-family: verdana,Times New Roman, Times, serif;
         }
-    </tbody>
-</table>
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+            a:hover {
+                color: dimgray;
+            }
+
+        ul.abc {
+            list-style-type: none;
+        }
+
+        li.abc {
+            background: #f0e7c6;
+            margin: 5px;
+            padding: 20px;
+        }
+
+        a.btn {
+            font-size: large;
+            font-weight: bold;
+            padding: 16px;
+            margin: 5px;
+        }
+    </style>
+}
