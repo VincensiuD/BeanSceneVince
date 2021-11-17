@@ -10,7 +10,7 @@
 </p>
 <div class="card bg-transparent">
     <div class="card-body">
-        <form asp-action="Index" method="get" style="border: solid 3px saddlebrown; padding: 5px; ">
+        <form asp-action="IndexList" method="get" style="border: solid 3px saddlebrown; padding: 5px; ">
             <div class="form-actions no-color">
                 <p style="font-weight:bold;">
                     <label>Search Option:</label>
@@ -25,12 +25,13 @@
                     <br />
                     <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
                     <input type="submit" value="Search" class="btn btn-sandy" />
-                    <a asp-action="Index" class="btn btn-sandy">Back to Full List</a>
+                    <a asp-action="IndexList" class="btn btn-sandy">Back to Full List</a>
+                    <span style="color:red; font-weight: bold;">@ViewBag.Warning</span>
                 </p>
                 <p>
                     @Html.ActionLink("Sort by Name", "IndexList", new { sortOrder = ViewBag.NameSortParm, status = ViewData["CurrentStatus"] }, new { @class = " btn btn-primary" })
-                    @Html.ActionLink("Sort by StartDate", "IndexList", new { sortOrder = ViewBag.DateSortParm, status = ViewData["CurrentStatus"] }, new { @class = " btn btn-primary" })
-                    @Html.ActionLink("Sort by SittingType", "IndexList", new { sortOrder = ViewBag.TypeSortParm, status = ViewData["CurrentStatus"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by Start Date", "IndexList", new { sortOrder = ViewBag.DateSortParm, status = ViewData["CurrentStatus"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by Sitting Type", "IndexList", new { sortOrder = ViewBag.TypeSortParm, status = ViewData["CurrentStatus"] }, new { @class = " btn btn-primary" })
                 </p>
             </div>
         </form>

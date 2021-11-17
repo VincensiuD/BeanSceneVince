@@ -7,16 +7,15 @@ $coffee: #1f1300;
 $chocs: #804d00;
 $sandy: #c9a671;
 $dusty: #ffdeab;
-
-$colors: ( "blue": $blue, "indigo": $indigo, "purple": $purple, "pink": $pink, "red": $red,
-    "orange": $orange, "yellow": $yellow, "green": $green, "teal": $teal, "cyan": $cyan,
-    "white": $white, "gray": $gray-600, "gray-dark": $gray-800, "coffee": $coffee, "sandy":$sandy, "chocs":$chocs);
+$papery: #f0e7c6;
+$colors: ( "blue": $blue, "indigo": $indigo, "purple": $purple, "pink": $pink, "red": $red, "orange": $orange, "yellow": $yellow, 
+    "green": $green, "teal": $teal, "cyan": $cyan, "white": $white, "gray": $gray-600, "gray-dark": $gray-800, 
+    "coffee": $coffee, "sandy":$sandy, "chocs":$chocs, "dusty":$dusty, "papery":$papery);
 
 $input-bg: $dusty;
 
-$theme-colors: ( "primary": $chocs, "secondary": $secondary, "success": $success,
-    "info": $info, "warning": $warning, "danger": $danger, "light": $light, 
-    "dark": $dark, "sandy": $sandy, "chocs":$chocs, "coffee":$coffee);
+$theme-colors: ( "primary": $chocs, "secondary": $secondary, "success": $success, "info": $info, "warning": $warning, 
+    "danger": $danger, "light": $light, "dark": $dark, "sandy": $sandy, "chocs":$chocs, "coffee":$coffee, "dusty":$dusty, "papery":$papery);
 
 $table-variants: ( "primary": shift-color($primary, $table-bg-scale),
     "secondary": shift-color($secondary, $table-bg-scale), 

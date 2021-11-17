@@ -16,9 +16,9 @@
             <form style="border: solid 3px saddlebrown; padding: 5px; ">
                 <p>
                     @Html.ActionLink("Sort by Name", "IndexList", new { sortOrder = ViewBag.NameSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
-                    @Html.ActionLink("Sort by StartDate", "IndexList", new { sortOrder = ViewBag.DateSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
-                    @Html.ActionLink("Sort by SittingType", "IndexList", new { sortOrder = ViewBag.TypeSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
-                    @Html.ActionLink("Sort by IsOpen", "IndexList", new { sortOrder = ViewBag.BoolSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by Start Date", "IndexList", new { sortOrder = ViewBag.DateSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by Sitting Type", "IndexList", new { sortOrder = ViewBag.TypeSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Sort by Is Open", "IndexList", new { sortOrder = ViewBag.BoolSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
                 </p>
             </form>
         </div>

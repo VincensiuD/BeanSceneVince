@@ -13,25 +13,25 @@
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                    @*<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>*@
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active" data-bs-interval="2000">
                         <img src="~/Images/dish1.jpg" style=" width:375px; height:250px" class="rounded mx-auto d-block" alt="...">
                     </div>
-                    <div class="carousel-item" data-bs-interval="4000">
+                    <div class="carousel-item" data-bs-interval="2000">
                         <img src="~/Images/dish2.jpg" style=" width:375px; height:250px" class="rounded mx-auto d-block" alt="...">
                     </div>
-                    <div class="carousel-item" data-bs-interval="4000">
+                    <div class="carousel-item" data-bs-interval="2000">
                         <img src="~/Images/dish3.jpg" style=" width:375px; height:250px" class="rounded mx-auto d-block" alt="...">
                     </div>
-                    @*<div class="carousel-item" data-bs-interval="4000">
+                    <div class="carousel-item" data-bs-interval="2000">
                             <img src="~/Images/dish4.jpg"style=" width:375px; height:250px" class="rounded mx-auto d-block" alt="...">
                         </div>
-                        <div class="carousel-item" data-bs-interval="4000">
+                        <div class="carousel-item" data-bs-interval="2000">
                             <img src="~/Images/dish5.jpg" style=" width:375px; height:250px" class="rounded mx-auto d-block" alt="...">
-                        </div>*@
+                        </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -93,9 +93,9 @@
                         </div>
 
 
-                        <div id="ajaxTimeSlot" type="hidden">
+                        <div id="ajaxTimeSlot" >
                             <label asp-for="TimeSlot" class="control-label" style="font-weight:bold"></label>
-                            <select asp-for="TimeSlot" id="secInput" class="form-control" type="hidden">
+                            <select asp-for="TimeSlot" id="secInput" class="form-control" >
                             </select>
                             <span asp-validation-for="TimeSlot" class="text-danger" style="color:red"></span>
 
@@ -120,7 +120,8 @@
                 <h4 class="card-header p-2 " style="background-color: #c9a671; ">Contact Us:</h4>
                 <div style="font-weight: bold; text-align:center;" class=" card-body p-3">
                     <h5>
-                        Bean Scene
+                        
+                        <img src="~/Images/BeanSceneLogo4.png" alt="logo" style=" width:50%; height:50%" >
                     </h5>
                     <br />
                     <p>
@@ -180,20 +181,17 @@
         let selDate = null;
         let selSit = null;
         document.getElementById("ajaxTimeSlot").hidden = true;
-        let options1 = $("#sitting").val();
-        console.log(options1);
+ 
+
 
         $(document).ready(function () {
 
-            if (options1 != "") {
+            if ($("#sitting").val() != "") {
                 $('#datepicker').removeAttr('disabled');
-
             }
 
             changingInput();
         });
-
-
 
 
         $(document).ready(function () {
@@ -261,124 +259,123 @@
         $('#datepicker').change(changingInput);
 
 
-        document.addEventListener("change", changingInput);
-
-        // mdel at timeslt, backend preCr add timeslt
-        // jquery ref
-        // preCr scpt.
 
 
 function changingInput () {
 
-               let selDate = $("#datepicker").val();
+             let selDate = $("#datepicker").val();
+                
             let selSit = $("#sitting").val();
 
 
             if ((selDate != "") && (selSit != null)) {
-
-                document.getElementById("ajaxTimeSlot").hidden = false;
-                console.log("Y");
-                console.log(selDate);
-            }
-
-
-            $.ajax({
-                url: 'https://localhost:44377/API/Reservations/Sitting/' + selSit + '/' + selDate,
-
-                type: 'GET',
-
-                dataType: 'json',
-
-                success: function (data, textStatus, xhr) {
+               
+               document.getElementById("ajaxTimeSlot").hidden = false;
+              
+    }
 
 
+    setTimeout(() => { callAjax(); }, 1);
+    
 
-                    let starterString = data.startTime;
-                    let starterDT = new Date(starterString);
+    function callAjax() {
+        $.ajax({
+            url: 'https://localhost:44377/API/Reservations/Sitting/' + selSit + '/' + selDate,
 
+            type: 'GET',
 
-                    let enderString = data.endTime;
-                    let enderDT = new Date(enderString);
-                    enderDT.setMinutes(enderDT.getMinutes() - 60);
+            dataType: 'json',
+
+            success: function (data, textStatus, xhr) {
 
 
 
+                let starterString = data.startTime;
+                let starterDT = new Date(starterString);
 
 
-                    let diff = enderDT - starterDT;
-                    let arrayLength = (diff / 3600000) * 4;
+                let enderString = data.endTime;
+                let enderDT = new Date(enderString);
+                enderDT.setMinutes(enderDT.getMinutes() - 60);
 
 
 
-                    let selectList = document.getElementById("secInput");
 
 
+                let diff = enderDT - starterDT;
+                let arrayLength = (diff / 3600000) * 4;
+
+
+
+                let selectList = document.getElementById("secInput");
+
+
+                for (let j = 0; j < timeSlotArray.length; j++) {
+                    selectList.remove(timeSlotArray[j]);
+                    console.log(j);
+                }
+
+                timeSlotArray.splice(0, timeSlotArray.length)
+
+                //Create array of options to be added
+
+
+                for (var i = 0; i < arrayLength + 1; i++) {
+                    let myDate = starterDT;
+                    let newDate = new Date(myDate);
+                    newDate.setMinutes(newDate.getMinutes() + (i * 15));
+                    function addZero(i) {
+                        if (i < 10) { i = "0" + i }
+                        return i;
+                    }
+                    let hours = addZero(newDate.getHours());
+
+                    let ampm = hours >= 12 ? ' PM' : ' AM';
+                    if (hours > 12) {
+                        hours = hours - 12; //problem with 2 digit
+                    }
+
+                    let minutes = addZero(newDate.getMinutes());
+                    let time = hours + ":" + minutes + ampm;
+
+
+                    timeSlotArray.push(time);
+                }
+
+
+
+
+                //Create and append the options
+                for (var i = 0; i < timeSlotArray.length; i++) {
+                    let option = document.createElement("option");
+                    option.id = "ajaxOptions"
+                    option.value = timeSlotArray[i];
+                    option.text = timeSlotArray[i];
+                    selectList.appendChild(option);
+                }
+
+
+
+
+            },
+            error: function (xhr, textStatus, errorThrown) {
+
+
+                let selectList = document.getElementById("ajaxOptions");
+
+                if (selectList != null) {
                     for (let j = 0; j < timeSlotArray.length; j++) {
                         selectList.remove(timeSlotArray[j]);
-                        console.log(j);
+                        console.log(timeSlotArray[j]);
                     }
-
-                    timeSlotArray.splice(0, timeSlotArray.length)
-
-                    //Create array of options to be added
-
-
-                    for (var i = 0; i < arrayLength + 1; i++) {
-                        let myDate = starterDT;
-                        let newDate = new Date(myDate);
-                        newDate.setMinutes(newDate.getMinutes() + (i * 15));
-                        function addZero(i) {
-                            if (i < 10) { i = "0" + i }
-                            return i;
-                        }
-                        let hours = addZero(newDate.getHours());
-
-                        let ampm = hours >= 12 ? ' PM' : ' AM';
-                        if (hours > 12) {
-                            hours = hours - 12; //problem with 2 digit
-                        }
-
-                        let minutes = addZero(newDate.getMinutes());
-                        let time = hours + ":" + minutes + ampm;
-
-
-                        timeSlotArray.push(time);
-                    }
-
-
-
-
-                    //Create and append the options
-                    for (var i = 0; i < timeSlotArray.length; i++) {
-                        let option = document.createElement("option");
-                        option.id = "ajaxOptions"
-                        option.value = timeSlotArray[i];
-                        option.text = timeSlotArray[i];
-                        selectList.appendChild(option);
-                    }
-
-
-
-
-                },
-                error: function (xhr, textStatus, errorThrown) {
-
-
-                    let selectList = document.getElementById("ajaxOptions");
-
-                    if (selectList != null) {
-                        for (let j = 0; j < timeSlotArray.length; j++) {
-                            selectList.remove(timeSlotArray[j]);
-                            console.log(timeSlotArray[j]);
-                        }
-
-                    }
-
-                    document.getElementById("ajaxTimeSlot").hidden = true;
 
                 }
-            });
 
+                document.getElementById("ajaxTimeSlot").hidden = true;
+
+            }
+        });
+    }
         }
 
 

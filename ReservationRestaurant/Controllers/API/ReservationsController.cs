@@ -119,5 +119,67 @@ namespace ReservationRestaurant.Controllers.Api
                 return NotFound();
             }
         }
+
+        [HttpGet, Route("Reservationonly")]// the name here in the Route should be the same as it in the Action Param
+
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetSittingList()
+        {
+            try
+            {
+                var sitting = _context.Reservations.ToList();
+
+              
+                return Ok(sitting);
+            }
+            catch (Exception)
+            {
+
+                return NotFound();
+            }
+        }
+
+
+        [HttpGet, Route("Sittingonly")]// the name here in the Route should be the same as it in the Action Param
+
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetSittingList2()
+        {
+            try
+            {
+                var sitting = _context.Sittings.ToList();
+
+
+                return Ok(sitting);
+            }
+            catch (Exception)
+            {
+
+                return NotFound();
+            }
+        }
+
+
+        [HttpGet, Route("React/{resvnId}")]// the name here in the Route should be the same as it in the Action Param
+
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetSittingList3(int resvnId)
+        {
+            try
+            {
+                var reservation = _context.Reservations.Include(r => r.Person)
+                                                       .Include(r => r.Sitting)
+                                                       .Include(r => r.ReservationStatus)
+                                                       .Include(r => r.ReservationOrigin)
+                                                       .Include(r => r.Tables).FirstOrDefault(r => r.Id == resvnId);
+
+                return Ok(reservation);
+            }
+            catch (Exception)
+            {
+
+                return NotFound();
+            }
+        }
     }
 }
