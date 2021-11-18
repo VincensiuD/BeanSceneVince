@@ -181,7 +181,7 @@
         let selDate = null;
         let selSit = null;
         document.getElementById("ajaxTimeSlot").hidden = true;
- 
+
 
 
         $(document).ready(function () {
@@ -238,6 +238,13 @@
                      @:array.push("@item");
                 }
                 }
+                else if (sitting == 4) {
+                  @foreach (var item in ViewBag.Other)
+                {
+
+                     @:array.push("@item");
+                }
+                }
             }
 
         );
@@ -264,19 +271,19 @@
 function changingInput () {
 
              let selDate = $("#datepicker").val();
-                
+
             let selSit = $("#sitting").val();
 
 
             if ((selDate != "") && (selSit != null)) {
-               
+
                document.getElementById("ajaxTimeSlot").hidden = false;
-              
+
     }
 
 
     setTimeout(() => { callAjax(); }, 1);
-    
+
 
     function callAjax() {
         $.ajax({

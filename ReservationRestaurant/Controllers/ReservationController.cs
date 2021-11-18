@@ -232,6 +232,7 @@ namespace ReservationRestaurant.Controllers
             ViewBag.BreakfastList = GenerateSittingAvailability(sittingList, 1).ToArray();
             ViewBag.LunchList = GenerateSittingAvailability(sittingList, 2).ToArray();
             ViewBag.DinnerList = GenerateSittingAvailability(sittingList, 3).ToArray();
+            ViewBag.Other = GenerateSittingAvailability(sittingList, 4).ToArray();
         }
 
         private static List<string> GenerateSittingAvailability(List<Sitting> sittingList, int sittingCode)
