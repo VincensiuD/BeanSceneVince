@@ -15,7 +15,7 @@ namespace ReservationRestaurant.Models.Reservation
         public string StartTime { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "The field {0} must be at least {1}.")]
         public int Guests { get; set; } = 1;
-        [Required(ErrorMessage = "Person - First Name: Required")]
+        [Required]
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Person - Last Name: Required")]
         public string LastName { get; set; }
@@ -30,7 +30,7 @@ namespace ReservationRestaurant.Models.Reservation
         [Display(Name = "Duration Time in minutes")]
         public int Duration { get; set; } = 60;
         [Display(Name = "Sitting Name")]
-        [Required(ErrorMessage = "Rservation - Sitting Type: Required")]
+        [Required(ErrorMessage = "Reservation - Sitting Type is required")]
         public int SittingId { get; set; }
         [Display(Name = "Reservation Origin")]
         public int ReservationOriginId { get; set; } = 3;// id=3 --> Online

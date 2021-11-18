@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ReservationRestaurant.Data;
+using ReservationRestaurant.Service;
 
 namespace ReservationRestaurant.Controllers
 {
@@ -15,10 +16,11 @@ namespace ReservationRestaurant.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-
-        public PersonController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        private readonly PersonService _personService;
+        public PersonController(ApplicationDbContext context, UserManager<IdentityUser> userManager, PersonService personService)
         {
             _context = context;
+            _personService = personService;
             _userManager = userManager;
         }
 
@@ -191,7 +193,8 @@ namespace ReservationRestaurant.Controllers
         // GET: Person/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new Models.Person.Create();
+            return View(model);
         }
 
         // POST: Person/Create
@@ -199,15 +202,24 @@ namespace ReservationRestaurant.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,UserId,Email,Phone")] Person person)
+        public async Task<IActionResult> Create(Models.Person.Create model)
         {
             if (ModelState.IsValid)
             {
+                Person person = new Person()
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    Phone = model.Phone
+                };
+
+
                 _context.Add(person);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(person);
+            return View(model);
         }
 
         // GET: Person/Edit/5
@@ -219,11 +231,22 @@ namespace ReservationRestaurant.Controllers
             }
 
             var person = await _context.People.FindAsync(id);
+
+            Models.Person.Create model = new Models.Person.Create()
+            {
+
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                Email = person.Email,
+                Phone = person.Phone,
+                UserId = person.UserId
+            };
+
             if (person == null)
             {
                 return NotFound();
             }
-            return View(person);
+            return View(model);
         }
 
         // POST: Person/Edit/5
@@ -231,34 +254,55 @@ namespace ReservationRestaurant.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,UserId,Email,Phone")] Person person)
+        public async Task<IActionResult> Edit(int id, Models.Person.Create model)
         {
-            if (id != person.Id)
+
+            if (id != model.Id)
             {
                 return NotFound();
             }
+            Person person2 = new Person();
+            bool isMember = true;
 
             if (ModelState.IsValid)
             {
-                try
+
+                if(model.UserId == null)
                 {
-                    _context.Update(person);
-                    await _context.SaveChangesAsync();
+                    isMember = false;
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PersonExists(person.Id))
+
+                Person person = new Person();
+
+                person.FirstName = model.FirstName;
+                person.LastName = model.LastName;
+                person.Email = model.Email;
+                person.Phone = model.Phone;
+                person.UserId = model.UserId;
+                    try
                     {
-                        return NotFound();
+
+                      person2 = await _personService.UpsertPersonAsync(person, isMember);   
+                    
+                    
+
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!PersonExists(person.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
-                }
-                return RedirectToAction(nameof(Index));
+                
+                return RedirectToAction(nameof(Details),new {person2.Id});
             }
-            return View(person);
+
+            return View(model);
         }
 
         // GET: Person/Delete/5

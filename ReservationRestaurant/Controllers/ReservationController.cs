@@ -75,7 +75,17 @@ namespace ReservationRestaurant.Controllers
 
                 else if (option == "ReservationId")
                 {
-                    reservations = reservations.Where(s => s.Id == int.Parse(searchString)).ToList();
+                    try
+                    {
+                        reservations = reservations.Where(s => s.Id == int.Parse(searchString)).ToList();
+                    }
+                    catch (Exception)
+                    {
+
+                        reservations =  reservations.Where(s => s.Id == 0).ToList();
+                        ViewBag.Warning = " When searching by Reservation ID, the input should be number only";
+                    }
+                    
                 }
                 else
                 {
@@ -172,6 +182,13 @@ namespace ReservationRestaurant.Controllers
                     {
                         preCreate.Message = $"The sitting ({selectedSitting.SittingType.Name}) for selected day is full. " +
                             "Please contact the restaurant to check if we can accommodate your request";
+                        ViewBagOpenSitting(allSitting);
+                        return InsertSelectList(preCreate);
+                    }
+
+                    if (preCreate.TimeSlot == null )
+                    {
+                        preCreate.Message = $"Time Slot is not selected. Please ensure your selected date is in dd-mm-yy format";
                         ViewBagOpenSitting(allSitting);
                         return InsertSelectList(preCreate);
                     }
@@ -543,6 +560,7 @@ namespace ReservationRestaurant.Controllers
         #region Update
         [Authorize(Roles = "Member")]
         [HttpGet]
+       
         public async Task<IActionResult> Update(int? id)
         {
             if (!id.HasValue)

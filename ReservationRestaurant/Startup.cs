@@ -19,6 +19,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 
+
 namespace ReservationRestaurant
 {
     public class Startup
@@ -76,15 +77,16 @@ namespace ReservationRestaurant
 
             // Huda check this website:https://gavilan.blog/2021/05/19/fixing-the-error-a-possible-object-cycle-was-detected-in-different-versions-of-asp-net-core/
 
-            services.AddControllers().AddJsonOptions(x =>
-                                        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+        //    services.AddControllers().AddJsonOptions(x =>
+          //                              x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
             //From Api class 16-09-2021 Video we add this---> step one
             services.AddCors();
 
 
-
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                 .AddNewtonsoftJson(options =>
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
