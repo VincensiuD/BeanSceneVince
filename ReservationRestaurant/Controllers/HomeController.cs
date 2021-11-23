@@ -42,7 +42,7 @@ namespace ReservationRestaurant.Controllers
                     await _userManager.AddToRoleAsync(user, "Member");
                 }
             }
-            return View();
+            return RedirectToAction("PreCreate", "Reservation");
         }
 
         public IActionResult Privacy()
