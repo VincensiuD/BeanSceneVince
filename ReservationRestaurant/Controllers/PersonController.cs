@@ -339,7 +339,7 @@ namespace ReservationRestaurant.Controllers
              if (person.UserId != null)
             {
                 var user = await _userManager.FindByIdAsync(person.UserId);
-                await _userManager.RemoveFromRolesAsync(user,new List<string>{ "Employee", "Member"});
+                await _userManager.RemoveFromRolesAsync(user,new List<string>{"Member"});
                 await _userManager.DeleteAsync(user);
             }
             _context.Reservations.RemoveRange(reservations);                                            

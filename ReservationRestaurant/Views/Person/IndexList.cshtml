@@ -78,9 +78,11 @@
                         @Html.DisplayFor(modelItem => item.Phone)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a>
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a>
+                        @if (!(item.Title == "Employee" || item.Title == "Manager"))
+                        {
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy">Delete</a>
+                        }
                     </td>
                 </tr>
             }
