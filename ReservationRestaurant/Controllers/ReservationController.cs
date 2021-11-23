@@ -256,20 +256,28 @@ namespace ReservationRestaurant.Controllers
 
         private static string JQueryDateSetting(List<Sitting> sittingList)
         {
-            var today = DateTime.Now;
-            var maxDate = sittingList.Select(x => x.StartTime).Max(); //the latest day in the sittingList
-            int dateDifference = (int)(maxDate - today).TotalDays - 1; // how many days between today and last day of available sitting
-            // minus two because they way DateTime count days includes the starting day (between today and tomo = 2 days)
-            string maximumBookingDate = "+" + (dateDifference.ToString()) + "d"; // to get format +2d or +3d or +4d that I need to use for datepicker jquery
-
-            string[] allDatesString = new string[dateDifference + 1];
-            //Sitting[] closedArray = sittingList.Where(x => x.IsClosed == true).ToArray();
-
-            for (int i = 0; i < dateDifference + 1; i++)
+            try
             {
-                allDatesString[i] = today.AddDays(i).ToShortDateString();
+                var today = DateTime.Now;
+                var maxDate = sittingList.Select(x => x.StartTime).Max(); //the latest day in the sittingList
+                int dateDifference = (int)(maxDate - today).TotalDays - 1; // how many days between today and last day of available sitting
+                                                                           // minus two because they way DateTime count days includes the starting day (between today and tomo = 2 days)
+                string maximumBookingDate = "+" + (dateDifference.ToString()) + "d"; // to get format +2d or +3d or +4d that I need to use for datepicker jquery
+
+                string[] allDatesString = new string[dateDifference + 1];
+                //Sitting[] closedArray = sittingList.Where(x => x.IsClosed == true).ToArray();
+
+                for (int i = 0; i < dateDifference + 1; i++)
+                {
+                    allDatesString[i] = today.AddDays(i).ToShortDateString();
+                }
+                return maximumBookingDate;
             }
-            return maximumBookingDate;
+            catch (Exception)
+            {
+                string maximumBookingDate = "+0d";
+                return maximumBookingDate;
+            }
         }
 
         private IActionResult InsertSelectList(Models.Reservation.PreCreate preCreate)
