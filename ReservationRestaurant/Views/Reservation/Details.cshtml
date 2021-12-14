@@ -6,10 +6,12 @@
 
 <h1>Reservation Details </h1>
 <h3 style="text-decoration: underline;">Status :  @Html.DisplayFor(model => model.ReservationStatus.Name) </h3>
+<h3 style="text-decoration: underline;">Created at :  @Html.DisplayFor(model => model.TimeStamp) </h3>
+
 <br />
 <div class="row">
     <div class="col-md-3"></div>
-    <div class="card" style="width: 40rem; ">
+    <div class="card" style="width: 40rem; background-color: #c9a671; ">
         <dl class="row card-body">
             <dt class="col-md-6 text-end">
                 @Html.DisplayNameFor(model => model.Person)
@@ -126,9 +128,9 @@
             @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
             {
                 <p>
-                    <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-sandy">Edit Reservation/Admin </a>
+                    <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-coffee">Edit Reservation </a>
                     <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" style=" width: 150px;">Delete</a>
-                    <a asp-action="IndexList" class="btn btn-sandy">Back to Reservation List</a>
+                    <a asp-action="Index" class="btn btn-coffee">Back to Reservations</a>
                 </p>
             }
         </div>

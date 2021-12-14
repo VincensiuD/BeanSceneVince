@@ -8,7 +8,7 @@
 <br />
 <div class="row">
     <div class="col-md-3"></div>
-    <div class="card" style="width: 40rem; ">
+    <div class="card" style="width: 40rem; background-color: #c9a671; ">
         <dl class="row card-body">
             <dt class="col-md-6 text-end">
                 @Html.DisplayNameFor(model => model.Name)
@@ -52,6 +52,12 @@
             <dd class="col-md-6">
                 @Html.DisplayFor(model => model.Pax)
             </dd>
+             <dt class="col-md-6 text-end">
+                Reservations
+            </dt>
+            <dd class="col-md-6">
+                @Html.DisplayFor(model => model.Reservations.Count)
+            </dd>
             <dt class="col-md-6 text-end">
                 @Html.DisplayNameFor(model => model.Restaurant)
             </dt>
@@ -81,9 +87,10 @@
             }
         </dl>
         <div style="text-align: center; padding-bottom: 20px;">
-            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary" style=" width: 150px;">Edit</a>
-            <a asp-action="IndexList" class="btn btn-sandy">Back to Sitting List</a>
-        </div>
+            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-coffee" style=" width: 120px;">Update</a>
+             <a asp-action="ReservationList" asp-route-id="@Model.Id" class="btn btn-coffee">Reservations</a>
+            <a asp-action="Index" class="btn btn-coffee">Back to List</a>
+         </div>
     </div>
 </div>
 @section Styles{

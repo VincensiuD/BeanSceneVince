@@ -33,12 +33,9 @@ namespace ReservationRestaurant.Controllers
         }
         #region Index
         [Authorize(Roles = "Employee")]
-        public IActionResult Index()
-        {
-            return View();
-        }
+       
         [Authorize(Roles = "Employee")]
-        public IActionResult IndexList(string searchString, string option, string sortOrder, string status)
+        public IActionResult Index(string searchString, string option, string sortOrder, string status)
         {
             var reservations = GetReservationsByStatus(status).Result;
             ViewData["CurrentFilter"] = searchString;
@@ -46,6 +43,7 @@ namespace ReservationRestaurant.Controllers
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name" : "Name";
             ViewBag.DateSortParm = String.IsNullOrEmpty(sortOrder) ? "Date" : "Date";
             ViewBag.TypeSortParm = String.IsNullOrEmpty(sortOrder) ? "Sitting" : "Sitting";
+            ViewBag.TypeSortParm = String.IsNullOrEmpty(sortOrder) ? "Status" : "Status";
             switch (sortOrder)
             {
                 case "Name":
@@ -56,6 +54,9 @@ namespace ReservationRestaurant.Controllers
                     break;
                 case "Sitting":
                     reservations = reservations.OrderBy(s => s.Sitting.SittingTypeId).ToList();
+                    break;
+                case "Status":
+                    reservations = reservations.OrderBy(s => s.ReservationStatusId).ToList();
                     break;
                 default:
                     reservations = reservations.OrderBy(s => s.Id).ToList();
@@ -417,7 +418,8 @@ namespace ReservationRestaurant.Controllers
                     ReservationStatusId = m.ReservationStatusId,
                     ReservationOriginId = m.ReservationOriginId,
                     SittingId = m.SittingId,
-                    SpecialRequirement = m.SpecialRequirement
+                    SpecialRequirement = m.SpecialRequirement,
+                    TimeStamp = DateTime.Now,
                 };
                 _context.Reservations.Add(reservation);
                 await _context.SaveChangesAsync();
@@ -608,7 +610,8 @@ namespace ReservationRestaurant.Controllers
                 SittingId = reservation.SittingId,
                 Sitting = reservation.Sitting,
                 ExistingTables = reservation.Tables,
-                ReservationStartDateTime = reservation.StartTime
+                ReservationStartDateTime = reservation.StartTime,
+               TimeStamp = reservation.TimeStamp,
             };
             var allTables = await _context.Tables.ToListAsync();
             TableMangements(m, allTables);
@@ -659,6 +662,7 @@ namespace ReservationRestaurant.Controllers
                     reservation.ReservationOriginId = m.ReservationOriginId;
                     reservation.SittingId = m.SittingId;
                     reservation.SpecialRequirement = m.SpecialRequirement;
+                    reservation.TimeStamp = m.TimeStamp;    
                     _context.Reservations.Update(reservation);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Details), new { reservation.Id });

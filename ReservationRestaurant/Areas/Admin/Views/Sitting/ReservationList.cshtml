@@ -11,8 +11,7 @@
 <h4> Start time: @Model.StartTime.ToShortDateString()  @Model.StartTime.ToShortTimeString()</h4>
 
 <p>
-    <a asp-area="" asp-controller="Reservation" asp-action="PreCreate" asp-route-sittingId="@Model.Id" class="btn btn-sandy">Create New</a>
-    <a asp-action="IndexList" class="btn btn-sandy">Go Back to Sitting List</a>
+    <a asp-area="" asp-controller="Reservation" asp-action="PreCreate" asp-route-sittingId="@Model.Id" asp-route-startTime="@Model.StartTime" class="btn btn-coffee">New</a>
 </p>
 <hr />
 <table class="table table-sm" style="background-color:antiquewhite">
@@ -75,17 +74,17 @@
                     @Html.DisplayFor(modelItem => item.Person.Email)
                 </td>
                 <td>
-                    <a asp-area="" asp-controller="Reservation" asp-action="Update" asp-route-id="@item.Id" class="btn btn-sandy">Edit</a>
-                    <a asp-area="" asp-controller="Reservation" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sandy">Details</a>
-                    <a asp-area="" asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sandy">Delete</a>
+                    <a asp-area="" asp-controller="Reservation" asp-action="Update" asp-route-id="@item.Id" class="btn btn-coffee">Edit</a>
+                    <a asp-area="" asp-controller="Reservation" asp-action="Details" asp-route-id="@item.Id" class="btn btn-coffee">Details</a>
+                    <a asp-area="" asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-coffee">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">
-    Delete All and Sitting?
+<button type="button" class="btn btn-coffee" data-bs-toggle="modal" data-bs-target="#myModal">
+    Delete All Reservations and Sitting?
 </button>
 <!-- Modal -->
 
@@ -139,7 +138,7 @@
         });</script>
 }
 @section Styles{
-    <style>
+     <style>
         table {
             border-collapse: collapse;
             border-spacing: 0;
@@ -151,16 +150,22 @@
 
         thead {
             font-size: large;
+            background-color: #c9a671;
         }
 
         td {
-            text-align: left;
+            text-align: center;
             padding: 16px;
             font-size: medium;
         }
 
+        th{
+            text-align: center;
+        }
+
         tr:nth-child(even) {
-            background-color: #ffdeab;
+            background-color: #c9a671;
+            color: black;
         }
 
         a.btn {

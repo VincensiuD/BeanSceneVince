@@ -23,5 +23,6 @@ namespace ReservationRestaurant.Models.Reservation
         public SelectList ReservationOrigins { get; set; }
         public Sitting Sitting { get; set; }
         public DateTime ReservationStartDateTime { get; set; }
+        public DateTime TimeStamp { get; set; }
     }
 }
