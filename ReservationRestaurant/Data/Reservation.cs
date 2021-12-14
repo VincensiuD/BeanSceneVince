@@ -21,5 +21,6 @@ namespace ReservationRestaurant.Data
         public int PersonId { get; set; }
         public Person Person { get; set; }
         public string SpecialRequirement {get; set;}
+        public DateTime TimeStamp { get; set; }
     }
 }

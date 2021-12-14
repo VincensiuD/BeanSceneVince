@@ -9,7 +9,7 @@
 <br />
 <div class="row">
     <div class="col-md-3"></div>
-    <div class="card" style="width: 40rem; ">
+    <div class="card" style="width: 40rem;  background-color: #c9a671; ">
         <dl class="row card-body">
             <dt class="col-md-6 text-end">
                 Person Name
@@ -101,14 +101,14 @@
         </dl>
         <form asp-action="Delete">
             <div style="text-align: center; padding-bottom: 20px;">
-                <input type="submit" value="Delete" class="btn btn-danger" name="Delete-Button" style=" width: 150px;" />
+                <input type="submit" value="Delete" class="btn btn-coffee" name="Delete-Button" style=" width: 150px;" />
                 @if (!(User.IsInRole("Manager") || User.IsInRole("Employee")))
                 {
                     <a asp-action="History" class="btn btn-sandy">Back to My Reservation List</a>
                 }
                 @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
                 {
-                    <a asp-action="IndexList" class="btn btn-sandy">Back to Reservations List</a>
+                    <a asp-action="Index" class="btn btn-coffee">Back to Reservations</a>
                 }
                 <input type="hidden" asp-for="Id" />
             </div>

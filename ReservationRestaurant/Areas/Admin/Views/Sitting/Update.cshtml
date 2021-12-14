@@ -9,6 +9,7 @@
 <form asp-action="Update">
     <div class="row">
         <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
         <div class="col-md-4" style="border-right-width: 0px;">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -26,13 +27,6 @@
                 <input asp-for="StartTime" id="chosenDate" class="form-control" type="date" />
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
-            <div class="form-group form-check" style="border: solid 1px saddlebrown; margin:10px; padding-block:5px;">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsClosed" style="border: solid 1px saddlebrown; margin-left:1px;" /> @Html.DisplayNameFor(model => model.IsClosed)
-                </label>
-            </div>
-        </div>
-        <div class="col-md-4" style="border-left-width: 0px;">
             <div class="form-group">
                 <label asp-for="Time1" class="control-label"></label>
                 <input asp-for="Time1" id="time1" class="form-control" type="time" />
@@ -48,10 +42,15 @@
                 <input asp-for="Capacity" class="form-control" />
                 <span asp-validation-for="Capacity" class="text-danger"></span>
             </div>
-
-            <div class="form-group" style="padding: 10px; direction: rtl;">
-                <a asp-action="IndexList" class="btn btn-sandy">Back to Sitting List</a>
-                <input type="submit" value="Save" class="btn btn-primary" style=" width: 150px;" />
+             <div class="form-group form-check" style="border: solid 1px saddlebrown; margin:10px; padding-block:5px;">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsClosed" style="border: solid 1px saddlebrown; margin-left:1px;" /> @Html.DisplayNameFor(model => model.IsClosed)
+                </label>
+            </div>
+        
+            <div class="form-group" style=" padding-left:100px; align-items:center ;">
+                <a asp-action="Index" class="btn btn-coffee">Back to List</a>
+                <input type="submit" value="Save" class="btn btn-coffee" style=" width: 110px;" />
             </div>
             <p> @ViewBag.ValidationMessage</p>
             <input type="hidden" asp-for="Id" />

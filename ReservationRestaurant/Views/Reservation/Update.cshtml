@@ -10,9 +10,11 @@
     <h5>Phone Number : @Model.PhoneNumber</h5>
     <h5>Date and Time : @Model.ReservationStartDateTime.ToShortDateString() @Model.ReservationStartDateTime.ToShortTimeString()</h5>
     <h5>Sitting Type : @Model.Sitting.SittingType.Name -- Sitting Name : @Model.Sitting.Name</h5>
+    <h5>Created at : @Model.TimeStamp</h5>
     <br />
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-2"></div>
         <div class="col-md-2"></div>
         <div class="col-md-4" style="border-right-width: 0px;">
             <div class="form-group">
@@ -25,8 +27,7 @@
                 <textarea asp-for="SpecialRequirement" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="SpecialRequirement" class="text-danger"></span>
             </div>
-        </div>
-        <div class="col-md-4" style="border-left-width: 0px;">
+        
             @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
             {
                 <div class="form-group">
@@ -57,13 +58,13 @@
             <div class="form-group" style="padding: 10px; direction: rtl; text-align: center; background-color: white;">
                 @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
                 {
-                    <a asp-action="IndexList" class="btn btn-sandy">Back to Reservation List</a>
+                    <a asp-action="Index" class="btn btn-coffee">Reservation List</a>
                 }
                 else
                 {
-                    <a asp-action="History" class="btn btn-sandy">Back to My Reservation List</a>
+                    <a asp-action="History" class="btn btn-coffee">Back to My Reservations</a>
                 }
-                <input type="submit" value="Save" class="btn btn-primary" style=" width: 150px;" />
+                <input type="submit" value="Save" class="btn btn-coffee" style=" width: 130px;" />
             </div>
         </div>
        
@@ -75,6 +76,7 @@
         <input type="hidden" asp-for="PhoneNumber" />
         <input type="hidden" asp-for="StartTime" />
         <input type="hidden" asp-for="SittingId" />
+        <input type="hidden" asp-for="TimeStamp" />
         <input type="hidden" asp-for="ReservationStartDateTime" />
 
     </div>

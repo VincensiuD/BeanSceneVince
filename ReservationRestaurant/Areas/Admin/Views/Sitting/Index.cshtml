@@ -1,75 +1,129 @@
-﻿@{
-    ViewData["Title"] = "Index";
-}
+﻿@model IEnumerable<ReservationRestaurant.Data.Sitting>
 
-<h1>Sitting Type List</h1>
-<p>
-    <a asp-action="IndexList" asp-route-sittingType="" class="btn btn-sandy">Show All Sitting List</a>
-</p>
+    @{
+    ViewData["Title"] = "IndexList";
+    }
 
-<div class="table-responsive-sm">
-    <table class="table table-sm" style="">
-        <thead>
-            <tr>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><a class="btn btn-papery col-12 text-start mx-auto  " asp-action="IndexList" asp-route-sittingType="Breakfast">Breakfast</a></td>
-            </tr>
-            <tr>
-                <td><a class="btn btn-papery col-12 text-start mx-auto " asp-action="IndexList" asp-route-sittingType="Lunch">Lunch</a></td>
-            </tr>
-            <tr>
-                <td><a class="btn btn-papery col-12 text-start mx-auto" asp-action="IndexList" asp-route-sittingType="Dinner">Dinner</a></td>
-            </tr>
-            <tr>
-                <td><a class="btn btn-papery col-12 text-start mx-auto" asp-action="IndexList" asp-route-sittingType="Other">Other</a></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <h1>Sitting List</h1>
 
-@section Styles{
+    <p>
+        <a asp-action="Create" class="btn btn-coffee">New</a>
+    </p>
+    <br />
+    <div class="card bg-transparent">
+        <div class="card-body">
+            <form style="border: solid 3px saddlebrown; padding: 5px; ">
+                <p> 
+                    <b>Sort by:</b>
+                    @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TypeSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
+                    @Html.ActionLink("Open", "Index", new { sortOrder = ViewBag.BoolSortParm, sittingType = ViewData["CurrentSitting"] }, new { @class = " btn btn-primary" })
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive-sm">
+        <table class="table table-sm" style="background-color:antiquewhite">
+            <thead>
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Time
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Vacancy
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Open status
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @item.StartTime.ToShortDateString()
+                    </td>
+                    <td>
+                        @item.StartTime.ToShortTimeString() - @item.EndTime.ToShortTimeString()
+                    </td>                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.Vacancies)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SittingType.Name)
+                    </td>
+                    @if (item.IsClosed)
+                    {
+                    <td>Closed</td>
+                    }
+                    else
+                    {
+                    <td>Open</td>
+                    }
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-coffee">Details</a>
+                        <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-coffee">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-coffee">Delete</a>
+                        <a asp-action="ReservationList" asp-route-id="@item.Id" class="btn btn-coffee">Reservations </a>
+                        <a asp-action="Report" asp-route-id="@item.Id" class="btn btn-coffee">Report</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @section Styles{
     <style>
         table {
             border-collapse: collapse;
             border-spacing: 0;
             width: 100%;
-            background-color: white;
-            font-weight: bold;
-            font-size: large;
+            border: 1px solid #ddd;
+            background-color: antiquewhite;
             font-family: verdana,Times New Roman, Times, serif;
         }
 
-        th, td {
-            text-align: left;
+        thead {
+            font-size: large;
+            background-color: #c9a671;
+        }
+
+        td {
+            text-align: center;
             padding: 16px;
+            font-size: medium;
         }
 
-        a {
-            text-decoration: none;
+        th{
+            text-align: center;
         }
 
-            a:hover {
-                color: dimgray;
-            }
-
-        ul.abc {
-            list-style-type: none;
-        }
-
-        li.abc {
-            background: #f0e7c6;
-            margin: 5px;
-            padding: 20px;
+        tr:nth-child(even) {
+            background-color: #c9a671;
+            color: black;
         }
 
         a.btn {
-            font-size: large;
-            font-weight: bold;
-            padding: 16px;
             margin: 5px;
         }
+
+        tr {
+            vertical-align: middle;
+        }
     </style>
-}
+    }

@@ -20,13 +20,10 @@ namespace ReservationRestaurant.Areas.Admin.Controllers
         }
 
         #region Index
+        
+       
         [Authorize(Roles = "Employee")]
-        public IActionResult Index()
-        {
-            return View();
-        }
-        [Authorize(Roles = "Employee")]
-        public IActionResult IndexList(string sortOrder, string sittingType)
+        public IActionResult Index(string sortOrder, string sittingType)
         {
             var listOfSittings = GetSittingListByType(sittingType).Result;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name" : "Name";

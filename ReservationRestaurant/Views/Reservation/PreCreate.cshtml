@@ -70,47 +70,42 @@
         <div class="col-4">
 
             <div class="card mb-3" style="max-width: 18rem">
-                <h4 class="card-header p-2 " style="background-color: #c9a671; ">Select sitting and date:</h4>
+                <h4 class="card-header p-2 " style="background-color: #c9a671; ">Book here:</h4>
                 <form asp-action="PreCreate">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="card-body p-3">
-                        <div class="form-group">
-                            <label asp-for="SittingTypeId" class="control-label" style="font-weight:bold"></label>
-                            <select asp-for="SittingTypeId" id="sitting" class="form-control" asp-items="Model.SittingTypeSL">
-                                <option value="">-- select sitting --</option>
-                            </select>
-                            <span asp-validation-for="SittingTypeId" class="text-success"></span>
-                        </div>
                         <div class="form-group">
                             <label asp-for="Guests" class="control-label" style="font-weight:bold"></label>
                             <input asp-for="Guests" class="form-control" />
                             <span asp-validation-for="Guests" class="text-danger" style="color:red"></span>
                         </div>
-                        <div>
+                        <div class="form-group">
+                            <label asp-for="SittingTypeId" class="control-label" style="font-weight:bold"></label>
+                            <select asp-for="SittingTypeId" id="sitting" class="form-control" asp-items="Model.SittingTypeSL">
+                                <option value="">----- Choose Your Sitting -----</option>
+                            </select>
+                            <span asp-validation-for="SittingTypeId" class="text-success"></span>
+                        </div>                   
+                        <div id="dateInput">
                             <label style="font-weight:bold"> Date </label>
-                            <input asp-for="StartTime" class="form-control" id="datepicker" disabled autocomplete="off">
+                            <input asp-for="StartTime" class="form-control" id="datepicker"  autocomplete="off">
                             <span asp-validation-for="StartTime" class="text-sandy"></span>
                         </div>
-
-
                         <div id="ajaxTimeSlot" >
                             <label asp-for="TimeSlot" class="control-label" style="font-weight:bold"></label>
                             <select asp-for="TimeSlot" id="secInput" class="form-control" >
                             </select>
                             <span asp-validation-for="TimeSlot" class="text-danger" style="color:red"></span>
-
                         </div>
-
                         <div class="form-group">
                             <span style="font-weight:bold; color: red;"> @Model.Message </span>
                         </div>
                         <br />
                         <div class="form-group">
-                            <input type="submit" value="BOOK NOW" class="btn btn-chocs" />
+                            <input type="submit" value="BOOK" class="btn btn-chocs" />
                         </div>
                     </div>
                 </form>
-
             </div>
 
             <br />
@@ -181,16 +176,17 @@
         let selDate = null;
         let selSit = null;
         document.getElementById("ajaxTimeSlot").hidden = true;
-
+        document.getElementById("dateInput").hidden = true;
 
 
         $(document).ready(function () {
 
             if ($("#sitting").val() != "") {
-                $('#datepicker').removeAttr('disabled');
+                $('#dateInput').removeAttr('hidden');
+                changingInput();
             }
 
-            changingInput();
+            
         });
 
 
@@ -200,7 +196,7 @@
             let options2 = $("#sitting").val();
 
                 if (options2 > 0) {
-                    $('#datepicker').removeAttr('disabled');
+                    $('#dateInput').removeAttr('hidden');
 
                 }
             });
